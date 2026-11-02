@@ -48,7 +48,8 @@ def get_duration(file_path):
 
 @app.route("/")
 def home():
-    return "PoliWhiz Audio Tools backend is running!"
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "index.html")
 
 
 @app.route("/api/split", methods=["POST"])
