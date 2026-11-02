@@ -1,0 +1,15 @@
+﻿.venv/
+__pycache__/
+*.py[cod]
+
+backend/uploads/
+backend/outputs/
+
+backend/app_backup.py
+backend/app_before_cors.py
+backend/requirements_backup.txt
+
+PoliWhiz-Audio-Tools_v1.zip
+
+.env
+.env.*

@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoliWhiz Audio Tools</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px 16px;
+            background: #101827;
+            color: #f3f4f6;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 26px;
+        }
+
+        .subtitle {
+            margin: 0 0 28px;
+            color: #aab4c5;
+            line-height: 1.5;
+        }
+
+        .panel {
+            padding: 20px;
+            background: #1c293b;
+            border: 1px solid #34445c;
+            border-radius: 16px;
+        }
+
+        label {
+            display: block;
+            margin: 18px 0 8px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            min-height: 48px;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        input, select {
+            padding: 10px;
+            color: #f3f4f6;
+            background: #101827;
+            border: 1px solid #52627a;
+        }
+
+        button {
+            margin-top: 22px;
+            padding: 12px;
+            border: 0;
+            background: #35a7e8;
+            color: #071421;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: wait;
+        }
+
+        #status {
+            margin-top: 18px;
+            line-height: 1.5;
+            color: #cbd5e1;
+            overflow-wrap: anywhere;
+        }
+
+        .download-link {
+            display: block;
+            margin-top: 10px;
+            padding: 13px;
+            border-radius: 10px;
+            background: #263c54;
+            color: #8bd0ff;
+            text-decoration: none;
+        }
+
+        .download-link:hover {
+            background: #314d6b;
+        }
+
+        .note {
+            margin-top: 18px;
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <h1>PoliWhiz Audio Tools</h1>
+        <p class="subtitle">Бесплатные инструменты для работы с аудио.</p>
+
+        <section class="panel">
+            <h2>Разделитель аудио</h2>
+            <p>Раздели запись на равные части.</p>
+
+            <form id="splitForm">
+                <label for="audio">Выбери аудиофайл</label>
+                <input
+                    type="file"
+                    id="audio"
+                    name="audio"
+                    accept=".mp3,.wav,.m4a,audio/mpeg,audio/wav,audio/mp4"
+                    required
+                >
+
+                <label for="parts">Количество частей</label>
+                <select id="parts" name="parts">
+                    <option value="2" selected>2 части</option>
+                    <option value="3">3 части</option>
+                    <option value="4">4 части</option>
+                    <option value="5">5 частей</option>
+                    <option value="6">6 частей</option>
+                    <option value="7">7 частей</option>
+                    <option value="8">8 частей</option>
+                    <option value="9">9 частей</option>
+                    <option value="10">10 частей</option>
+                </select>
+
+                <button type="submit" id="splitButton">
+                    Разделить аудио
+                </button>
+            </form>
+
+            <div id="status" aria-live="polite"></div>
+            <div id="downloads"></div>
+        </section>
+
+        <p class="note">
+            Поддерживаемые форматы: MP3, WAV и M4A.
+            Максимальный размер файла: 200 МБ.
+        </p>
+    </main>
+
+    <script>
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        const form = document.getElementById("splitForm");
+        const statusBox = document.getElementById("status");
+        const downloadsBox = document.getElementById("downloads");
+        const splitButton = document.getElementById("splitButton");
+
+        // Временно используется локальный адрес для разработки.
+        const API_BASE = "http://127.0.0.1:5000";
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const audioFile = document.getElementById("audio").files[0];
+            const partsCount = document.getElementById("parts").value;
+
+            downloadsBox.innerHTML = "";
+            statusBox.textContent = "";
+
+            if (!audioFile) {
+                statusBox.textContent = "Сначала выбери аудиофайл.";
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("audio", audioFile);
+            formData.append("parts", partsCount);
+
+            splitButton.disabled = true;
+            splitButton.textContent = "Обрабатываю аудио...";
+            statusBox.textContent = "Загружаю файл и разделяю его. Подожди...";
+
+            try {
+                const response = await fetch(`${API_BASE}/api/split`, {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || "Не удалось разделить аудио.");
+                }
+
+                statusBox.textContent =
+                    `Готово! Создано частей: ${result.parts_count}.`;
+
+                result.parts.forEach((part) => {
+                    const link = document.createElement("a");
+                    link.className = "download-link";
+                    link.href = `${API_BASE}${part.download_url}`;
+                    link.textContent = `Скачать ${part.name}`;
+                    link.download = part.name;
+                    downloadsBox.appendChild(link);
+                });
+
+            } catch (error) {
+                statusBox.textContent =
+                    `Ошибка: ${error.message}`;
+            } finally {
+                splitButton.disabled = false;
+                splitButton.textContent = "Разделить аудио";
+            }
+        });
+    </script>
+</body>
+</html>
