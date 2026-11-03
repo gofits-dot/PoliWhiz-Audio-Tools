@@ -13,3 +13,6 @@ PoliWhiz-Audio-Tools_v1.zip
 
 .env
 .env.*
+# Local backup files
+*_backup.*
+*_before_*.*

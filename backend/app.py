@@ -49,6 +49,12 @@ def get_duration(file_path):
 @app.route("/")
 def home():
     web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "home.html")
+
+
+@app.route("/splitter")
+def splitter():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "index.html")
 
 
@@ -187,4 +193,4 @@ def file_too_large(_error):
 if __name__ == "__main__":
     import os
 
-app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)), debug=False)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)), debug=False)

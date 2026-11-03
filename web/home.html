@@ -1,0 +1,518 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faff">
+
+    <title>PoliWhiz — Understand Real Speech</title>
+
+    <meta name="description" content="Improve your listening skills with real-world audio. Turn spoken language into text and practise at your own pace.">
+
+    <style>
+        :root {
+            --background: #f7faff;
+            --surface: #ffffff;
+            --text: #172b4d;
+            --muted: #64748b;
+            --blue: #3478e5;
+            --blue-dark: #245fc0;
+            --blue-light: #eaf2ff;
+            --border: #e3eaf4;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.92);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav {
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--blue);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 22px;
+            border-radius: 10px;
+            background: var(--blue);
+            color: white;
+            font-weight: 700;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .button:hover {
+            background: var(--blue-dark);
+            transform: translateY(-1px);
+        }
+
+        .button.secondary {
+            background: white;
+            color: var(--blue);
+            border: 1px solid var(--border);
+        }
+
+        .button.secondary:hover {
+            background: var(--blue-light);
+        }
+
+        .hero {
+            padding: 100px 0 90px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 30px;
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 22px;
+        }
+
+        h1 {
+            max-width: 850px;
+            margin: 0 auto 22px;
+            font-size: clamp(38px, 6vw, 66px);
+            line-height: 1.08;
+            letter-spacing: -2.5px;
+        }
+
+        .hero p {
+            max-width: 650px;
+            margin: 0 auto 30px;
+            color: var(--muted);
+            font-size: 19px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        section {
+            padding: 76px 0;
+        }
+
+        .section-heading {
+            max-width: 680px;
+            margin: 0 auto 42px;
+            text-align: center;
+        }
+
+        h2 {
+            margin: 0 0 14px;
+            font-size: clamp(28px, 4vw, 40px);
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .intro {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .intro-text {
+            max-width: 780px;
+            margin: 0 auto;
+            text-align: center;
+            color: var(--muted);
+            font-size: 18px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--blue-light);
+            color: var(--blue);
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .versions {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .version-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .version-card {
+            padding: 32px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: white;
+        }
+
+        .version-card.highlight {
+            border-color: #b8d1ff;
+            background: #fbfdff;
+        }
+
+        .version-card h3 {
+            margin: 0 0 8px;
+            font-size: 23px;
+        }
+
+        .version-card p {
+            color: var(--muted);
+        }
+
+        .version-card ul {
+            padding-left: 20px;
+            color: var(--muted);
+            margin-bottom: 0;
+        }
+
+        .splitter-section {
+            background: var(--blue-light);
+        }
+
+        .splitter-box {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 42px;
+            background: white;
+            border: 1px solid #d8e6ff;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .splitter-box p {
+            max-width: 620px;
+            margin: 0 auto 25px;
+            color: var(--muted);
+        }
+
+        .cta {
+            text-align: center;
+        }
+
+        .cta p {
+            max-width: 620px;
+            margin: 0 auto 25px;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        footer {
+            padding: 30px 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        @media (max-width: 760px) {
+            .nav {
+                padding: 15px 0;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-links {
+                width: 100%;
+                gap: 18px;
+                flex-wrap: wrap;
+            }
+
+            .hero {
+                padding: 70px 0;
+            }
+
+            .cards,
+            .version-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 58px 0;
+            }
+
+            .splitter-box {
+                padding: 28px 20px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="container nav">
+        <a class="logo" href="/">Poli<span>Whiz</span></a>
+
+        <nav class="nav-links">
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+            <a href="#versions">Android versions</a>
+            <a href="#splitter">Audio Splitter</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">Language learning through real speech</div>
+
+            <h1>Understand real speech.<br>Learn without limits.</h1>
+
+            <p>
+                Improve your listening skills with real-world audio.
+                Turn spoken language into readable text and learn at your own pace.
+            </p>
+
+            <div class="hero-buttons">
+                <a class="button" href="#versions">Explore PoliWhiz</a>
+                <a class="button secondary" href="/splitter">Open Audio Splitter</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="intro" id="about">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Learn from the way people really speak</h2>
+            </div>
+
+            <p class="intro-text">
+                Textbooks teach you the language. Real conversations show you
+                how people actually use it. PoliWhiz helps you work with spoken
+                audio and its text, making listening practice easier to organise
+                and understand.
+            </p>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Listening practice for real life</h2>
+                <p>
+                    Use audio from conversations, radio programmes, podcasts
+                    and interviews as part of your language-learning routine.
+                </p>
+            </div>
+
+            <div class="cards">
+                <article class="card">
+                    <div class="card-icon">🎧</div>
+                    <h3>Real-world audio</h3>
+                    <p>
+                        Practise with recordings that expose you to natural
+                        speech, different voices and everyday language.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <div class="card-icon">📝</div>
+                    <h3>Speech to text</h3>
+                    <p>
+                        Turn spoken audio into readable text and use it
+                        to support your listening practice.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <div class="card-icon">🌍</div>
+                    <h3>Learn at your pace</h3>
+                    <p>
+                        Work with languages such as English, French, Spanish
+                        and Catalan, and build your own learning routine.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="versions" id="versions">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Choose your PoliWhiz version</h2>
+                <p>
+                    Start with a short trial or use the full version
+                    for longer recordings.
+                </p>
+            </div>
+
+            <div class="version-grid">
+                <article class="version-card">
+                    <h3>PoliWhiz Trial</h3>
+                    <p>A simple way to try audio transcription.</p>
+                    <ul>
+                        <li>Free trial version</li>
+                        <li>Up to 1 minute of audio transcription</li>
+                        <li>Explore the PoliWhiz experience</li>
+                    </ul>
+                </article>
+
+                <article class="version-card highlight">
+                    <h3>PoliWhiz Full</h3>
+                    <p>For longer listening-practice sessions.</p>
+                    <ul>
+                        <li>No one-minute transcription limit</li>
+                        <li>Designed for longer audio recordings</li>
+                        <li>Downloads its speech recognition model independently</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="splitter-section" id="splitter">
+        <div class="container">
+            <div class="splitter-box">
+                <div class="card-icon" style="margin: 0 auto 20px;">✂️</div>
+
+                <h2>Audio Splitter</h2>
+
+                <p>
+                    Divide a long audio file into smaller, manageable parts.
+                    Create equal sections and download them for easier listening
+                    and practice.
+                </p>
+
+                <a class="button" href="/splitter">Open Audio Splitter</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Make real speech part of your learning</h2>
+
+            <p>
+                Explore PoliWhiz and find a practical way to work with
+                the audio you want to understand.
+            </p>
+
+            <a class="button" href="https://t.me/poliwhis" target="_blank" rel="noopener noreferrer">
+                Visit PoliWhiz on Telegram
+            </a>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <div class="container footer-content">
+        <strong>PoliWhiz</strong>
+        <span>Real speech, real practice, better understanding.</span>
+        <span>&copy; 2026 PoliWhiz</span>
+    </div>
+</footer>
+
+</body>
+</html>
