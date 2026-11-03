@@ -70,6 +70,15 @@
         .logo span {
             color: var(--blue);
         }
+        .brand-motto {
+            display: block;
+            margin-top: 2px;
+            font-size: 11px;
+            font-style: italic;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+            color: var(--muted);
+        }
 
         .nav-links {
             display: flex;
@@ -350,7 +359,10 @@
 
 <header>
     <div class="container nav">
-        <a class="logo" href="/">Poli<span>Whiz</span></a>
+        <div class="brand">
+            <a class="logo" href="/">Poli<span>Whiz</span></a>
+            <span class="brand-motto">À travers les épines, vers les étoiles !</span>
+        </div>
 
         <nav class="nav-links">
             <a href="#about">About</a>
@@ -508,10 +520,11 @@
 
 <footer>
     <div class="container footer-content">
-        <strong>PoliWhiz</strong>
-        <span>Real speech, real practice, better understanding.</span>
-        <span>&copy; 2026 PoliWhiz</span>
-    </div>
+    <strong>PoliWhiz</strong>
+    <span class="brand-motto">À travers les épines, vers les étoiles !</span>
+    <span>Real speech, real practice, better understanding.</span>
+    <span>&copy; 2026 PoliWhiz</span>
+</div>
 </footer>
 
 </body>
