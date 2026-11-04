@@ -51,6 +51,11 @@ def home():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "home.html")
 
+@app.route("/ru")
+def home_ru():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "home_ru.html")
+
 
 @app.route("/splitter")
 def splitter():
