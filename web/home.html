@@ -93,6 +93,38 @@
             color: var(--blue);
         }
 
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 4px;
+            padding-left: 18px;
+            border-left: 1px solid var(--border);
+        }
+
+        .language-switcher a,
+        .language-switcher span {
+            min-width: 34px;
+            padding: 5px 8px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.4;
+            font-weight: 700;
+        }
+
+        .language-switcher .active {
+            color: var(--blue-dark);
+            background: var(--blue-light);
+            border-color: #cfe0ff;
+        }
+
+        .language-switcher .disabled {
+            color: #aab4c3;
+            background: #f8fafc;
+            cursor: not-allowed;
+        }
         .button {
             display: inline-flex;
             align-items: center;
@@ -369,6 +401,11 @@
             <a href="#features">Features</a>
             <a href="#versions">Android versions</a>
             <a href="#splitter">Audio Splitter</a>
+            <div class="language-switcher" aria-label="Language selection">
+                <span class="active" aria-current="page">EN</span>
+                <a href="/ru" lang="ru">RU</a>
+                <span class="disabled" aria-disabled="true" title="Coming soon">ES</span>
+            </div>
         </nav>
     </div>
 </header>
