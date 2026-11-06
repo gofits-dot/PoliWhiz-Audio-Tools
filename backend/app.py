@@ -72,6 +72,15 @@ def robots():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "robots.txt", mimetype="text/plain")
 
+@app.route("/yandex_0210c72dfc5030ec.html")
+def yandex_verification():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(
+        web_dir,
+        "yandex_0210c72dfc5030ec.html",
+        mimetype="text/html"
+    )
+
 
 @app.route("/api/split", methods=["POST"])
 def split_audio():
