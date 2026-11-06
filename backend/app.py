@@ -61,6 +61,16 @@ def home_ru():
 def splitter():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "index.html")
+@app.route("/sitemap.xml")
+def sitemap():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "sitemap.xml", mimetype="application/xml")
+
+
+@app.route("/robots.txt")
+def robots():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "robots.txt", mimetype="text/plain")
 
 
 @app.route("/api/split", methods=["POST"])
