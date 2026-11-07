@@ -1,4 +1,4 @@
-﻿
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -127,34 +127,31 @@
             line-height: 1.5;
         }
     </style>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=114109504', 'ym');
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=114109504', 'ym');
 
-    ym(114109504, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<!-- /Yandex.Metrika counter -->
+        ym(114109504, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce: true, trackLinks: true });
+    </script>
+    <!-- /Yandex.Metrika counter -->
 </head>
 <body>
-<!-- Yandex.Metrika noscript -->
-<noscript><div><img src="https://mc.yandex.ru/watch/114109504" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika noscript -->
     <main class="container">
         <h1>PoliWhiz Audio Tools</h1>
-        <a class="home-link" href="https://poliwhiz.com/">в†ђ РќР° РіР»Р°РІРЅСѓСЋ</a>
-        <p class="subtitle">Р‘РµСЃРїР»Р°С‚РЅС‹Рµ РёРЅСЃС‚СЂСѓРјРµРЅС‚С‹ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ Р°СѓРґРёРѕ.</p>
+        <a class="home-link" href="https://poliwhiz.com/">← На главную</a>
+        <p class="subtitle">Бесплатные инструменты для работы с аудио.</p>
 
         <section class="panel">
-            <h2>Р Р°Р·РґРµР»РёС‚РµР»СЊ Р°СѓРґРёРѕ</h2>
-            <p>Р Р°Р·РґРµР»Рё Р·Р°РїРёСЃСЊ РЅР° СЂР°РІРЅС‹Рµ С‡Р°СЃС‚Рё.</p>
+            <h2>Разделитель аудио</h2>
+            <p>Раздели запись на равные части.</p>
 
             <form id="splitForm">
-                <label for="audio">Р’С‹Р±РµСЂРё Р°СѓРґРёРѕС„Р°Р№Р»</label>
+                <label for="audio">Выбери аудиофайл</label>
                 <input
                     type="file"
                     id="audio"
@@ -163,21 +160,21 @@
                     required
                 >
 
-                <label for="parts">РљРѕР»РёС‡РµСЃС‚РІРѕ С‡Р°СЃС‚РµР№</label>
+                <label for="parts">Количество частей</label>
                 <select id="parts" name="parts">
-                    <option value="2" selected>2 С‡Р°СЃС‚Рё</option>
-                    <option value="3">3 С‡Р°СЃС‚Рё</option>
-                    <option value="4">4 С‡Р°СЃС‚Рё</option>
-                    <option value="5">5 С‡Р°СЃС‚РµР№</option>
-                    <option value="6">6 С‡Р°СЃС‚РµР№</option>
-                    <option value="7">7 С‡Р°СЃС‚РµР№</option>
-                    <option value="8">8 С‡Р°СЃС‚РµР№</option>
-                    <option value="9">9 С‡Р°СЃС‚РµР№</option>
-                    <option value="10">10 С‡Р°СЃС‚РµР№</option>
+                    <option value="2" selected>2 части</option>
+                    <option value="3">3 части</option>
+                    <option value="4">4 части</option>
+                    <option value="5">5 частей</option>
+                    <option value="6">6 частей</option>
+                    <option value="7">7 частей</option>
+                    <option value="8">8 частей</option>
+                    <option value="9">9 частей</option>
+                    <option value="10">10 частей</option>
                 </select>
 
                 <button type="submit" id="splitButton">
-                    Р Р°Р·РґРµР»РёС‚СЊ Р°СѓРґРёРѕ
+                    Разделить аудио
                 </button>
             </form>
 
@@ -186,8 +183,8 @@
         </section>
 
         <p class="note">
-            РџРѕРґРґРµСЂР¶РёРІР°РµРјС‹Рµ С„РѕСЂРјР°С‚С‹: MP3, WAV Рё M4A.
-            РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ С„Р°Р№Р»Р°: 200 РњР‘.
+            Поддерживаемые форматы: MP3, WAV и M4A.
+            Максимальный размер файла: 200 МБ.
         </p>
     </main>
 
@@ -203,7 +200,7 @@
         const downloadsBox = document.getElementById("downloads");
         const splitButton = document.getElementById("splitButton");
 
-        // Р’СЂРµРјРµРЅРЅРѕ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р»РѕРєР°Р»СЊРЅС‹Р№ Р°РґСЂРµСЃ РґР»СЏ СЂР°Р·СЂР°Р±РѕС‚РєРё.
+        // Временно используется локальный адрес для разработки.
         const API_BASE = "https://poliwhiz-audio-tools.fadehost.app";
 
         form.addEventListener("submit", async (event) => {
@@ -216,7 +213,7 @@
             statusBox.textContent = "";
 
             if (!audioFile) {
-                statusBox.textContent = "РЎРЅР°С‡Р°Р»Р° РІС‹Р±РµСЂРё Р°СѓРґРёРѕС„Р°Р№Р».";
+                statusBox.textContent = "Сначала выбери аудиофайл.";
                 return;
             }
 
@@ -225,8 +222,8 @@
             formData.append("parts", partsCount);
 
             splitButton.disabled = true;
-            splitButton.textContent = "РћР±СЂР°Р±Р°С‚С‹РІР°СЋ Р°СѓРґРёРѕ...";
-            statusBox.textContent = "Р—Р°РіСЂСѓР¶Р°СЋ С„Р°Р№Р» Рё СЂР°Р·РґРµР»СЏСЋ РµРіРѕ. РџРѕРґРѕР¶РґРё...";
+            splitButton.textContent = "Обрабатываю аудио...";
+            statusBox.textContent = "Загружаю файл и разделяю его. Подожди...";
 
             try {
                 const response = await fetch(`${API_BASE}/api/split`, {
@@ -237,30 +234,29 @@
                 const result = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(result.error || "РќРµ СѓРґР°Р»РѕСЃСЊ СЂР°Р·РґРµР»РёС‚СЊ Р°СѓРґРёРѕ.");
+                    throw new Error(result.error || "Не удалось разделить аудио.");
                 }
 
                 statusBox.textContent =
-                    `Р“РѕС‚РѕРІРѕ! РЎРѕР·РґР°РЅРѕ С‡Р°СЃС‚РµР№: ${result.parts_count}.`;
+                    `Готово! Создано частей: ${result.parts_count}.`;
 
                 result.parts.forEach((part) => {
                     const link = document.createElement("a");
                     link.className = "download-link";
                     link.href = `${API_BASE}${part.download_url}`;
-                    link.textContent = `РЎРєР°С‡Р°С‚СЊ ${part.name}`;
+                    link.textContent = `Скачать ${part.name}`;
                     link.download = part.name;
                     downloadsBox.appendChild(link);
                 });
 
             } catch (error) {
                 statusBox.textContent =
-                    `РћС€РёР±РєР°: ${error.message}`;
+                    `Ошибка: ${error.message}`;
             } finally {
                 splitButton.disabled = false;
-                splitButton.textContent = "Р Р°Р·РґРµР»РёС‚СЊ Р°СѓРґРёРѕ";
+                splitButton.textContent = "Разделить аудио";
             }
         });
     </script>
 </body>
 </html>
-
