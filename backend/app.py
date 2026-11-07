@@ -67,6 +67,11 @@ def guide_ru():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "how_it_works_ru.html")
 
+@app.route("/images/<path:filename>")
+def guide_images(filename):
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir / "images", filename)
+
 
 @app.route("/splitter")
 def splitter():
