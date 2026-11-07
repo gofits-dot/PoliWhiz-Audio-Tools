@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faff">
+
+    <title>Руководство по PoliWhiz | PoliWhiz</title>
+    <meta name="description" content="Подробное руководство по использованию приложения PoliWhiz.">
+
+    <link rel="canonical" href="https://poliwhiz.com/how_it_works_ru.html">
+    <link rel="alternate" hreflang="en" href="https://poliwhiz.com/how_it_works_en.html">
+    <link rel="alternate" hreflang="ru" href="https://poliwhiz.com/how_it_works_ru.html">
+    <link rel="alternate" hreflang="x-default" href="https://poliwhiz.com/how_it_works_en.html">
+
+    <style>
+        :root {
+            --background: #f7faff;
+            --surface: #ffffff;
+            --text: #172b4d;
+            --muted: #64748b;
+            --blue: #3478e5;
+            --blue-dark: #245fc0;
+            --blue-light: #eaf2ff;
+            --border: #e3eaf4;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .container {
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255,255,255,0.92);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav {
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span { color: var(--blue); }
+
+        .brand-motto {
+            display: block;
+            margin-top: 2px;
+            font-size: 11px;
+            font-style: italic;
+            color: var(--muted);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 22px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover { color: var(--blue); }
+
+        .language-switcher {
+            display: flex;
+            gap: 6px;
+            padding-left: 16px;
+            border-left: 1px solid var(--border);
+        }
+
+        .language-switcher a {
+            min-width: 34px;
+            padding: 5px 8px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .language-switcher .active {
+            color: var(--blue-dark);
+            background: var(--blue-light);
+            border-color: #cfe0ff;
+        }
+
+        .hero {
+            padding: 75px 0 55px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 30px;
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0 auto 18px;
+            font-size: clamp(36px, 5vw, 54px);
+            line-height: 1.12;
+            letter-spacing: -1.5px;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 18px;
+        }
+
+        .guide {
+            padding: 35px 0 80px;
+        }
+
+        .guide-card {
+            position: relative;
+            margin-bottom: 24px;
+            padding: 32px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .step-number {
+            color: var(--blue);
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            margin: 0 0 20px;
+            font-size: 25px;
+            line-height: 1.3;
+        }
+
+        .content-placeholder {
+            min-height: 65px;
+        }
+
+        .image-placeholder {
+            min-height: 180px;
+            max-width: 620px;
+            margin: 20px auto 0;
+            border: 2px dashed #cbd9ed;
+            border-radius: 12px;
+            background: #fbfdff;
+        }
+
+        footer {
+            padding: 30px 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        @media (max-width: 760px) {
+            .nav {
+                padding: 15px 0;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-links { gap: 14px; }
+
+            .language-switcher {
+                padding-left: 0;
+                border-left: none;
+            }
+
+            .hero { padding: 55px 0 40px; }
+
+            .guide-card { padding: 24px 20px; }
+
+            h2 { font-size: 22px; }
+
+            .image-placeholder { min-height: 140px; }
+
+            .footer-content { flex-direction: column; }
+        }
+
+/* Guide screenshots */
+.content-placeholder {
+    min-height: 0;
+}
+
+.content-placeholder p {
+    margin: 0 0 14px;
+    line-height: 1.65;
+}
+
+.content-placeholder ul {
+    padding-left: 24px;
+    margin: 8px 0 16px;
+    line-height: 1.65;
+}
+
+.image-placeholder {
+    width: 100%;
+    max-width: 250px;
+    min-height: 0;
+    margin: 20px auto 0;
+    padding: 4px;
+    box-sizing: border-box;
+    border: 1px solid #cbd9ed;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.image-placeholder img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+@media (max-width: 700px) {
+    .image-placeholder {
+        width: 100%;
+        max-width: 250px;
+    }
+}
+/* Guide card: screenshot on the left, description on the right */
+.guide-card-body {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+    margin-top: 20px;
+}
+
+.guide-card-body .content-placeholder {
+    min-width: 0;
+}
+
+.guide-card-body .image-placeholder {
+    width: 100%;
+    max-width: 260px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+}
+
+.guide-card-body .image-placeholder img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+/* Mobile layout */
+@media (max-width: 700px) {
+    .guide-card-body {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .guide-card-body .image-placeholder {
+        max-width: 240px;
+    }
+}
+/* Studio: three full-size screenshots above the description */
+.guide-card-body.guide-studio-layout {
+    display: block;
+}
+
+.guide-studio-images {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 260px));
+    justify-content: start;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.guide-card-body .guide-studio-images .image-placeholder {
+    width: 100%;
+    max-width: 260px;
+}
+
+.guide-studio-images img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+@media (max-width: 700px) {
+    .guide-studio-images {
+        grid-template-columns: minmax(0, 240px);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="container nav">
+        <div class="brand">
+            <a class="logo" href="/ru">Poli<span>Whiz</span></a>
+            <span class="brand-motto">À travers les épines, vers les étoiles !</span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/ru">Главная</a>
+            <a href="/splitter">Разделитель аудио</a>
+            <div class="language-switcher" aria-label="Language">
+                <a href="/how_it_works_en.html" >EN</a>
+                <a href="/how_it_works_ru.html" class="active" aria-current="page">RU</a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">Руководство пользователя</div>
+            <h1>Руководство по PoliWhiz</h1>
+            <p>Познакомьтесь с возможностями PoliWhiz и узнайте, как использовать приложение для практики аудирования.</p>
+        </div>
+    </section>
+
+    <section class="guide">
+        <div class="container">
+                    <article class="guide-card" id="step-1">
+                        <div class="step-number">01</div>
+                        <h2>Первый запуск и загрузка модели</h2>
+
+                        <div class="guide-card-body">
+                            <div class="image-placeholder">
+                                <img src="images/guide/1.jpg" alt="Первый запуск и загрузка модели" loading="lazy">
+                            </div>
+
+                            <div class="content-placeholder">
+                                <p>При запуске PoliWhiz главный экран появляется сразу. Одновременно приложение автоматически загружает
+                                    модель распознавания речи в память телефона.</p>
+                                <p>В верхней части экрана отображается надпись «Загрузка модели в память...» и индикатор выполнения с
+                                    процентами. Продолжительность загрузки зависит от характеристик устройства и обычно составляет несколько
+                                    секунд.</p>
+                                <p>После завершения загрузки приложение готово к обработке аудио. При этом основные элементы интерфейса
+                                    доступны уже во время загрузки — можно переходить в другие разделы приложения, не дожидаясь её
+                                    завершения.</p>
+                            </div>
+                        </div>
+                    </article>
+
+
+<article class="guide-card" id="step-2">
+    <div class="step-number">02</div>
+    <h2>Выбор аудиофайла</h2>
+
+    <div class="guide-card-body">
+        <div class="image-placeholder">
+            <img src="images/guide/2.jpg" alt="Выбор аудиофайла" loading="lazy">
+        </div>
+
+        <div class="content-placeholder">
+            <p>Для начала работы нажмите кнопку «Выбрать» на главном экране. Откроется системный файловый менеджер, в котором можно найти и выбрать аудиофайл в памяти телефона.</p>
+            <p>Рекомендуется дождаться полной загрузки модели перед выбором файла. Это позволит сразу приступить к обработке аудио.</p>
+            <p>После выбора файла PoliWhiz автоматически начинает его обработку и распознавание речи. Дополнительно запускать транскрибацию не требуется.</p>
+        </div>
+    </div>
+</article>
+
+<article class="guide-card" id="step-3">
+    <div class="step-number">03</div>
+    <h2>Преобразование речи в текст</h2>
+
+    <div class="guide-card-body">
+        <div class="image-placeholder">
+            <img src="images/guide/3.jpg" alt="Преобразование речи в текст" loading="lazy">
+        </div>
+
+        <div class="content-placeholder">
+            <p>После выбора аудиофайла в верхней части экрана отображаются два отдельных таймера:</p>
+            <ul>
+                <li><strong>Подготовка</strong> — показывает время, затраченное на подготовку аудиофайла к обработке.
+                </li>
+                <li><strong>Транскрибация</strong> — показывает время непосредственного распознавания речи и
+                    преобразования её в текст.</li>
+            </ul>
+            <p>Когда подготовка файла заканчивается, первый таймер останавливается, а второй продолжает отсчитывать
+                время до завершения транскрибации.</p>
+            <p>Продолжительность обработки зависит от мощности процессора телефона и длины аудиозаписи.</p>
+            <p>После завершения распознавания начальная инструкция на главном экране исчезает, а вместо неё появляется
+                текстовое поле с расшифровкой. Первая строка текста с временными метками выделяется жёлтым цветом — это
+                начальная позиция подсветки.</p>
+        </div>
+    </div>
+</article>
+
+<article class="guide-card" id="step-4">
+    <div class="step-number">04</div>
+    <h2>Работа с аудио и расшифровкой</h2>
+
+    <div class="guide-card-body">
+        <div class="image-placeholder">
+            <img src="images/guide/4.jpg" alt="Работа с аудио и синхронной расшифровкой" loading="lazy">
+        </div>
+
+        <div class="content-placeholder">
+            <p>После завершения транскрибации можно одновременно прослушивать исходную запись и следить за
+                соответствующим фрагментом текста.</p>
+            <p>Нажмите кнопку воспроизведения в нижней части экрана. Во время проигрывания текущий фрагмент расшифровки
+                выделяется жёлтым цветом. Подсветка перемещается вслед за аудио. Когда она достигает середины экрана,
+                текст продолжает прокручиваться вверх, а выделенная строка остаётся примерно на одном уровне.</p>
+            <p>Можно также перемещаться по записи с помощью бегунка аудиоплеера. При переходе к другой позиции подсветка
+                текста перемещается к соответствующему временному отрезку.</p>
+            <p><strong>Кнопки управления аудиоплеером:</strong></p>
+            <ul>
+                <li><strong>Выбрать</strong> — открыть файловый менеджер и выбрать другой аудиофайл.</li>
+                <li><strong>Медленно / Норма</strong> — переключить скорость воспроизведения. Режим «Медленно»
+                    воспроизводит запись на 25% медленнее обычного, а «Норма» возвращает стандартную скорость.</li>
+                <li><strong>Стоп</strong> — остановить воспроизведение и вернуть аудио к началу.</li>
+                <li><strong>Воспроизведение / Пауза</strong> — запустить или приостановить прослушивание. При нажатии на
+                    паузу позиция воспроизведения автоматически смещается на две секунды назад, и подсветка текста
+                    перемещается к соответствующему месту.</li>
+            </ul>
+            <p>Текстовое поле предназначено для просмотра расшифровки и синхронного отслеживания речи. Нажатие
+                непосредственно на текст не перемещает воспроизведение.</p>
+        </div>
+    </div>
+</article>
+
+
+<article class="guide-card" id="step-5">
+    <div class="step-number">05</div>
+    <h2>Перевод текста</h2>
+
+    <div class="guide-card-body">
+        <div class="image-placeholder">
+            <img src="images/guide/5.jpg" alt="Перевод текста" loading="lazy">
+        </div>
+
+        <div class="content-placeholder">
+            <p>После завершения транскрибации становятся доступны две кнопки перевода: «Русский» и «Английский».</p>
+            <p>Выберите нужный язык. Внутри соответствующей кнопки появится таймер, показывающий ход перевода. После
+                завершения обработки на экране откроется дополнительная панель с переведённым текстом.</p>
+            <p>Перевод сохраняет временные метки, благодаря чему его можно сопоставлять с исходной расшифровкой и
+                аудиозаписью.</p>
+            <p>Чтобы освободить рабочее пространство для следующего файла, нажмите кнопку «Очистить». Она удаляет и
+                перевод, и исходную транскрибацию.</p>
+        </div>
+    </div>
+</article>
+
+<article class="guide-card" id="step-6">
+    <div class="step-number">06</div>
+    <h2>Студия — инструменты обработки аудио</h2>
+
+    <div class="guide-card-body guide-studio-layout"></div>
+        <div class="guide-studio-images">
+            <div class="image-placeholder">
+                <img src="images/guide/6_1.jpg" alt="Студия — разделитель" loading="lazy">
+            </div>
+            <div class="image-placeholder">
+                <img src="images/guide/6_2.jpg" alt="Студия — конвертер" loading="lazy">
+            </div>
+            <div class="image-placeholder">
+                <img src="images/guide/6_3.jpg" alt="Студия — фильтр" loading="lazy">
+            </div>
+        </div>
+
+        <div class="content-placeholder">
+            <p>В разделе «Студия» собраны дополнительные инструменты для работы с аудиофайлами. Здесь доступны три
+                функции:</p>
+            <ul>
+                <li><strong>Разделитель</strong> — инструмент для разделения аудиозаписи на отдельные части.</li>
+                <li><strong>Конвертер</strong> — инструмент для преобразования аудиофайлов.</li>
+                <li><strong>Фильтр</strong> — инструмент для обработки аудио.</li>
+            </ul>
+            <p>Каждый инструмент открывается отдельно и предназначен для решения своей задачи. Подробное описание
+                порядка работы с ними будет представлено в соответствующих подразделах руководства.</p>
+        </div>
+    </div>
+</article>
+
+    </section>
+</main>
+
+<footer>
+    <div class="container footer-content">
+        <strong>PoliWhiz</strong>
+        <span class="brand-motto">À travers les épines, vers les étoiles !</span>
+        <span>Живая речь, настоящая практика, лучшее понимание.</span>
+        <span>&copy; 2026 PoliWhiz</span>
+    </div>
+</footer>
+
+</body>
+</html>

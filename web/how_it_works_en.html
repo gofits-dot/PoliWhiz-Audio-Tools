@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faff">
+
+    <title>PoliWhiz User Guide | PoliWhiz</title>
+    <meta name="description" content="A step-by-step guide to using the PoliWhiz application.">
+
+    <link rel="canonical" href="https://poliwhiz.com/how_it_works_en.html">
+    <link rel="alternate" hreflang="en" href="https://poliwhiz.com/how_it_works_en.html">
+    <link rel="alternate" hreflang="ru" href="https://poliwhiz.com/how_it_works_ru.html">
+    <link rel="alternate" hreflang="x-default" href="https://poliwhiz.com/how_it_works_en.html">
+
+    <style>
+        :root {
+            --background: #f7faff;
+            --surface: #ffffff;
+            --text: #172b4d;
+            --muted: #64748b;
+            --blue: #3478e5;
+            --blue-dark: #245fc0;
+            --blue-light: #eaf2ff;
+            --border: #e3eaf4;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .container {
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255,255,255,0.92);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav {
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span { color: var(--blue); }
+
+        .brand-motto {
+            display: block;
+            margin-top: 2px;
+            font-size: 11px;
+            font-style: italic;
+            color: var(--muted);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 22px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover { color: var(--blue); }
+
+        .language-switcher {
+            display: flex;
+            gap: 6px;
+            padding-left: 16px;
+            border-left: 1px solid var(--border);
+        }
+
+        .language-switcher a {
+            min-width: 34px;
+            padding: 5px 8px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .language-switcher .active {
+            color: var(--blue-dark);
+            background: var(--blue-light);
+            border-color: #cfe0ff;
+        }
+
+        .hero {
+            padding: 75px 0 55px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 30px;
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0 auto 18px;
+            font-size: clamp(36px, 5vw, 54px);
+            line-height: 1.12;
+            letter-spacing: -1.5px;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 18px;
+        }
+
+        .guide {
+            padding: 35px 0 80px;
+        }
+
+        .guide-card {
+            position: relative;
+            margin-bottom: 24px;
+            padding: 32px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .step-number {
+            color: var(--blue);
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            margin: 0 0 20px;
+            font-size: 25px;
+            line-height: 1.3;
+        }
+
+        .content-placeholder {
+            min-height: 65px;
+        }
+
+        .image-placeholder {
+            min-height: 180px;
+            max-width: 620px;
+            margin: 20px auto 0;
+            border: 2px dashed #cbd9ed;
+            border-radius: 12px;
+            background: #fbfdff;
+        }
+
+        footer {
+            padding: 30px 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        @media (max-width: 760px) {
+            .nav {
+                padding: 15px 0;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-links { gap: 14px; }
+
+            .language-switcher {
+                padding-left: 0;
+                border-left: none;
+            }
+
+            .hero { padding: 55px 0 40px; }
+
+            .guide-card { padding: 24px 20px; }
+
+            h2 { font-size: 22px; }
+
+            .image-placeholder { min-height: 140px; }
+
+            .footer-content { flex-direction: column; }
+        }
+    /* Guide card: screenshot on the left, description on the right */
+.guide-card-body {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+    margin-top: 20px;
+}
+
+.guide-card-body .content-placeholder {
+    min-width: 0;
+}
+
+.guide-card-body .image-placeholder {
+    width: 100%;
+    max-width: 260px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+}
+
+.guide-card-body .image-placeholder img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+/* Mobile layout */
+@media (max-width: 700px) {
+    .guide-card-body {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .guide-card-body .image-placeholder {
+        max-width: 240px;
+    }
+}
+/* Studio: three full-size screenshots above the description */
+.guide-card-body.guide-studio-layout {
+    display: block;
+}
+
+.guide-studio-images {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 260px));
+    justify-content: start;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.guide-card-body .guide-studio-images .image-placeholder {
+    width: 100%;
+    max-width: 260px;
+}
+
+.guide-studio-images img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+@media (max-width: 700px) {
+    .guide-studio-images {
+        grid-template-columns: minmax(0, 240px);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="container nav">
+        <div class="brand">
+            <a class="logo" href="/">Poli<span>Whiz</span></a>
+            <span class="brand-motto">À travers les épines, vers les étoiles !</span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/splitter">Audio Splitter</a>
+            <div class="language-switcher" aria-label="Language">
+                <a href="/how_it_works_en.html" class="active" aria-current="page">EN</a>
+                <a href="/how_it_works_ru.html" >RU</a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">User Guide</div>
+            <h1>PoliWhiz User Guide</h1>
+            <p>Explore PoliWhiz and learn how to use the application to improve your listening skills.</p>
+        </div>
+    </section>
+
+    <section class="guide">
+        <div class="container">
+                    <article class="guide-card" id="step-1">
+                        <div class="step-number">01</div>
+                        <h2>First Launch and Model Loading</h2>
+
+                        <div class="guide-card-body">
+                            <div class="image-placeholder">
+                                <img src="images/guide/1.jpg" alt="First launch and model loading" loading="lazy">
+                            </div>
+
+                            <div class="content-placeholder">
+                                <p>When PoliWhiz starts, the main screen appears immediately. At the same time, the app automatically loads
+                                    the speech recognition model into the phone's memory.</p>
+                                <p>At the top of the screen, you will see the message "Loading model into memory..." and a progress
+                                    indicator showing the loading percentage. Loading time depends on your device's specifications and
+                                    usually takes a few seconds.</p>
+                                <p>Once loading is complete, the app is ready to process audio. The main interface elements are also
+                                    available while the model is loading, so you can navigate to other sections of the app without waiting
+                                    for the process to finish.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="guide-card" id="step-2">
+                        <div class="step-number">02</div>
+                        <h2>Selecting an Audio File</h2>
+
+                        <div class="guide-card-body">
+                            <div class="image-placeholder">
+                                <img src="images/guide/2.jpg" alt="Selecting an audio file" loading="lazy">
+                            </div>
+
+                            <div class="content-placeholder">
+                                <p>To get started, tap the "Select" button on the main screen. The system file manager will open, allowing
+                                    you to find and select an audio file stored on your phone.</p>
+                                <p>We recommend waiting until the model has finished loading before selecting a file. This will allow you to
+                                    start processing the audio immediately.</p>
+                                <p>Once you select a file, PoliWhiz automatically starts processing it and recognizing the speech. There is
+                                    no need to start transcription manually.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="guide-card" id="step-3">
+                        <div class="step-number">03</div>
+                        <h2>Converting Speech into Text</h2>
+
+                        <div class="guide-card-body">
+                            <div class="image-placeholder">
+                                <img src="images/guide/3.jpg" alt="Converting speech into text" loading="lazy">
+                            </div>
+
+                            <div class="content-placeholder">
+                                <p>After you select an audio file, two separate timers appear at the top of the screen:</p>
+                                <ul>
+                                    <li><strong>Preparation</strong> — shows how much time was spent preparing the audio file for
+                                        processing.</li>
+                                    <li><strong>Transcription</strong> — shows the time spent recognizing speech and converting it into
+                                        text.</li>
+                                </ul>
+                                <p>When file preparation is complete, the first timer stops, while the second continues running until
+                                    transcription is finished.</p>
+                                <p>Processing time depends on your phone's processor performance and the length of the audio recording.</p>
+                                <p>Once speech recognition is complete, the initial instructions on the main screen disappear and a text
+                                    area containing the transcript appears. The first line of text, which includes timestamps, is
+                                    highlighted in yellow to indicate the initial highlight position.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="guide-card" id="step-4">
+                        <div class="step-number">04</div>
+                        <h2>Working with Audio and the Transcript</h2>
+
+                        <div class="guide-card-body">
+                            <div class="image-placeholder">
+                                <img src="images/guide/4.jpg" alt="Working with audio and the synchronized transcript" loading="lazy">
+                            </div>
+
+                            <div class="content-placeholder">
+                                <p>Once transcription is complete, you can listen to the original recording while following the
+                                    corresponding section of text.</p>
+                                <p>Tap the play button at the bottom of the screen. During playback, the current transcript segment is
+                                    highlighted in yellow. The highlight moves along with the audio. When it reaches the middle of the
+                                    screen, the text continues scrolling upwards while the highlighted line remains approximately in the
+                                    same position.</p>
+                                <p>You can also navigate through the recording using the audio player's seek bar. When you move to a
+                                    different position, the text highlight jumps to the corresponding timestamp.</p>
+                                <p><strong>Audio player controls:</strong></p>
+                                <ul>
+                                    <li><strong>Select</strong> — open the file manager and choose another audio file.</li>
+                                    <li><strong>Slow / Normal</strong> — change the playback speed. Slow mode plays the recording 25% slower
+                                        than normal, while Normal restores the standard speed.</li>
+                                    <li><strong>Stop</strong> — stop playback and return the audio to the beginning.</li>
+                                    <li><strong>Play / Pause</strong> — start or pause playback. When you tap Pause, the playback position
+                                        automatically moves back by two seconds, and the text highlight moves to the corresponding point.
+                                    </li>
+                                </ul>
+                                <p>The text area is designed for viewing the transcript and following the speech in sync with the audio.
+                                    Tapping directly on the text does not change the playback position.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="guide-card" id="step-5">
+                        <div class="step-number">05</div>
+                        <h2>Text Translation</h2>
+
+                        <div class="guide-card-body">
+                            <div class="image-placeholder">
+                                <img src="images/guide/5.jpg" alt="Text translation" loading="lazy">
+                            </div>
+
+                            <div class="content-placeholder">
+                                <p>Once transcription is complete, two translation buttons become available: "Russian" and "English".</p>
+                                <p>Select the language you need. A timer will appear inside the corresponding button to show the translation
+                                    progress. Once processing is complete, an additional panel containing the translated text will appear on
+                                    the screen.</p>
+                                <p>The translation preserves timestamps, allowing you to compare it with the original transcript and audio
+                                    recording.</p>
+                                <p>To free up workspace for the next file, tap the "Clear" button. It removes both the translation and the
+                                    original transcript.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="guide-card" id="step-6">
+                        <div class="step-number">06</div>
+                        <h2>Studio — Audio Tools</h2>
+
+                        <div class="guide-card-body guide-studio-layout">
+                            <div class="guide-studio-images">
+                                <div class="image-placeholder">
+                                    <img src="images/guide/6_1.jpg" alt="Studio — Splitter" loading="lazy">
+                                </div>
+                                <div class="image-placeholder">
+                                    <img src="images/guide/6_2.jpg" alt="Studio — Converter" loading="lazy">
+                                </div>
+                                <div class="image-placeholder">
+                                    <img src="images/guide/6_3.jpg" alt="Studio — Filter" loading="lazy">
+                                </div>
+                            </div>
+
+                            <div class="content-placeholder">
+                                <p>The Studio section brings together additional tools for working with audio files. It includes three
+                                    features:</p>
+                                <ul>
+                                    <li><strong>Splitter</strong> — a tool for splitting an audio recording into separate parts.</li>
+                                    <li><strong>Converter</strong> — a tool for converting audio files between formats.</li>
+                                    <li><strong>Filter</strong> — a tool for audio processing.</li>
+                                </ul>
+                                <p>Each tool opens separately and is designed for a specific task. Detailed instructions on how to use these
+                                    tools will be provided in the corresponding sections of the user guide.</p>
+                            </div>
+                        </div>
+                    </article>
+
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container footer-content">
+        <strong>PoliWhiz</strong>
+        <span class="brand-motto">À travers les épines, vers les étoiles !</span>
+        <span>Real speech, real practice, better understanding.</span>
+        <span>&copy; 2026 PoliWhiz</span>
+    </div>
+</footer>
+
+</body>
+</html>
