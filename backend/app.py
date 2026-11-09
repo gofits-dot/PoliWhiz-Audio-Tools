@@ -10,7 +10,13 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 CORS(app, resources={
-    r"/api/*": {"origins": "http://127.0.0.1:8000"}
+    r"/api/*": {
+        "origins": [
+            "http://127.0.0.1:8080",
+            "https://poliwhiz.com",
+            "https://www.poliwhiz.com"
+        ]
+    }
 })
 
 BASE_DIR = Path(__file__).resolve().parent
