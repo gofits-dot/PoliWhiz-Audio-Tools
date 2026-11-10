@@ -83,6 +83,28 @@ def guide_images(filename):
 def splitter():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "index.html")
+@app.route("/studio")
+def studio():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "studio.html")
+
+
+@app.route("/studio/ru")
+def studio_ru():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "studio_ru.html")
+
+@app.route("/studio/splitter")
+def studio_splitter():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "studio_splitter.html")
+
+
+@app.route("/studio/ru/splitter")
+def studio_splitter_ru():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "studio_splitter_ru.html")
+
 @app.route("/sitemap.xml")
 def sitemap():
     web_dir = Path(__file__).resolve().parent.parent / "web"

@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CYBZT3WY4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-6CYBZT3WY4');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faff">
+
+    <title>PoliWhiz Studio — Online Audio Tools</title>
+    <link rel="canonical" href="https://poliwhiz.com/studio">
+    <link rel="alternate" hreflang="en" href="https://poliwhiz.com/studio">
+    <link rel="alternate" hreflang="ru" href="https://poliwhiz.com/studio/ru">
+    <link rel="alternate" hreflang="x-default" href="https://poliwhiz.com/studio">
+
+    <meta name="description" content="PoliWhiz Studio — simple online audio tools. Split audio, convert formats, reduce noise and extract audio from video.">
+
+    <style>
+        :root {
+            --background: #f7faff;
+            --surface: #ffffff;
+            --text: #172b4d;
+            --muted: #64748b;
+            --blue: #3478e5;
+            --blue-dark: #245fc0;
+            --blue-light: #eaf2ff;
+            --border: #e3eaf4;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav {
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--blue);
+        }
+
+        .brand-motto {
+            display: block;
+            margin-top: 2px;
+            font-size: 11px;
+            font-style: italic;
+            font-weight: 500;
+            color: var(--muted);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+        }
+
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 4px;
+            padding-left: 18px;
+            border-left: 1px solid var(--border);
+        }
+
+        .language-switcher a,
+        .language-switcher span {
+            min-width: 34px;
+            padding: 5px 8px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .language-switcher .active {
+            color: var(--blue-dark);
+            background: var(--blue-light);
+            border-color: #cfe0ff;
+        }
+
+        main {
+            min-height: calc(100vh - 190px);
+            padding: 64px 0 80px;
+        }
+
+        .hero {
+            max-width: 720px;
+            margin: 0 auto 42px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0 0 16px;
+            font-size: clamp(32px, 5vw, 46px);
+            line-height: 1.15;
+            letter-spacing: -1.5px;
+        }
+
+        .hero p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .tool-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 230px;
+            padding: 28px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(30, 64, 120, 0.04);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .tool-card.available:hover {
+            transform: translateY(-3px);
+            border-color: #b8d0fa;
+            box-shadow: 0 10px 28px rgba(30, 64, 120, 0.09);
+        }
+
+        .tool-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            margin-bottom: 20px;
+            border-radius: 13px;
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            font-size: 25px;
+        }
+
+        .tool-card h2 {
+            margin: 0 0 8px;
+            font-size: 21px;
+        }
+
+        .tool-card p {
+            margin: 0 0 22px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .open-link {
+            display: inline-block;
+            padding: 9px 17px;
+            border-radius: 8px;
+            background: var(--blue);
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .open-link:hover {
+            background: var(--blue-dark);
+        }
+
+        .status {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .coming-soon {
+            opacity: 0.78;
+        }
+
+        footer {
+            padding: 30px 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        @media (max-width: 760px) {
+            .nav {
+                padding: 15px 0;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-links {
+                width: 100%;
+                gap: 14px;
+                flex-wrap: wrap;
+            }
+
+            .language-switcher {
+                margin-left: 0;
+                padding-left: 12px;
+            }
+
+            main {
+                padding: 42px 0 56px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .tool-card {
+                min-height: 210px;
+                padding: 23px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <!-- Yandex.Metrika -->
+    <script type="text/javascript">
+        (function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for (var j=0; j<document.scripts.length; j++) {
+                if (document.scripts[j].src===r) return;
+            }
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],
+            k.async=1,k.src=r,a.parentNode.insertBefore(k,a);
+        })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=114109504', 'ym');
+
+        ym(114109504, 'init', {
+            ssr:true,
+            webvisor:true,
+            clickmap:true,
+            ecommerce:"dataLayer",
+            referrer: document.referrer,
+            url: location.href,
+            accurateTrackBounce:true,
+            trackLinks:true
+        });
+    </script>
+</head>
+
+<body>
+    <noscript>
+        <div>
+            <img src="https://mc.yandex.ru/watch/114109504"
+                 style="position:absolute; left:-9999px;" alt="">
+        </div>
+    </noscript>
+
+    <header>
+        <div class="container nav">
+            <div class="brand">
+                <a class="logo" href="/">Poli<span>Whiz</span></a>
+                <span class="brand-motto">À travers les épines, vers les étoiles !</span>
+            </div>
+
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/studio" aria-current="page">Studio</a>
+                <a href="/how_it_works_en.html">User Guide</a>
+
+                <div class="language-switcher" aria-label="Language selection">
+                    <span class="active" aria-current="page">EN</span>
+                    <a href="/studio/ru" lang="ru">RU</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="hero">
+                <span class="eyebrow">PoliWhiz Studio</span>
+                <h1>Audio tools for everyone</h1>
+                <p>
+                    Simple tools to work with audio and video.
+                    Choose what you need and get started.
+                </p>
+            </section>
+
+            <section class="tools-grid" aria-label="Audio tools">
+                <article class="tool-card available">
+                    <div class="tool-icon" aria-hidden="true">✂</div>
+                    <h2>Audio Splitter</h2>
+                    <p>Split an audio file into equal parts for easier listening and study.</p>
+                    <div class="card-bottom">
+                        <a class="open-link" href="/splitter">Open tool →</a>
+                        <span class="status">Available</span>
+                    </div>
+                </article>
+
+                <article class="tool-card coming-soon">
+                    <div class="tool-icon" aria-hidden="true">⇄</div>
+                    <h2>Audio Converter</h2>
+                    <p>Convert audio files between popular formats.</p>
+                    <div class="card-bottom">
+                        <span class="status">Coming soon</span>
+                    </div>
+                </article>
+
+                <article class="tool-card coming-soon">
+                    <div class="tool-icon" aria-hidden="true">〰</div>
+                    <h2>Noise Reduction</h2>
+                    <p>Reduce background noise and make speech clearer.</p>
+                    <div class="card-bottom">
+                        <span class="status">Coming soon</span>
+                    </div>
+                </article>
+
+                <article class="tool-card coming-soon">
+                    <div class="tool-icon" aria-hidden="true">♫</div>
+                    <h2>Video Extractor</h2>
+                    <p>Extract an audio track from a video file.</p>
+                    <div class="card-bottom">
+                        <span class="status">Coming soon</span>
+                    </div>
+                </article>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <strong>PoliWhiz</strong>
+            <span class="brand-motto">À travers les épines, vers les étoiles !</span>
+            <span>Simple tools for real-world audio.</span>
+            <span>&copy; 2026 PoliWhiz</span>
+        </div>
+    </footer>
+</body>
+</html>
