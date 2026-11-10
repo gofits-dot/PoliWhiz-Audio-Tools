@@ -2,9 +2,12 @@
 import os
 import subprocess
 import uuid
+import json
+import urllib.request
+from datetime import datetime
 from pathlib import Path
 
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory, redirect
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
@@ -27,6 +30,93 @@ ALLOWED_EXTENSIONS = {".mp3", ".wav", ".m4a"}
 MAX_CONTENT_LENGTH = 200 * 1024 * 1024  # 200 MB
 
 app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH
+
+ADMIN_CHAT_ID = 1710023187
+
+APK_URL = (
+    "https://drive.google.com/file/d/"
+    "1SHi6ckfkMSlqD0IUqY_T4i71BAqyiXZm/view?usp=drivesdk"
+)
+
+
+def send_telegram_notification():
+    token = os.environ.get("TELEGRAM_BOT_TOKEN")
+
+    if not token:
+        app.logger.error("TELEGRAM_BOT_TOKEN is not configured")
+        return
+
+    payload = {
+        "chat_id": ADMIN_CHAT_ID,
+        "text": (
+            "📥 Нажатие ссылки PoliWhiz Trial!\n\n"
+            "Пользователь перешёл к скачиванию APK.\n"
+            "Время события: "
+            + datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+        ),
+    }
+
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    data = json.dumps(payload).encode("utf-8")
+
+    req = urllib.request.Request(
+        url,
+        data=data,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(req, timeout=10) as response:
+            result = json.loads(response.read().decode("utf-8"))
+
+        if not result.get("ok"):
+            raise RuntimeError("Telegram API rejected the notification")
+
+        app.logger.info("Download click notification sent to administrator")
+
+    except Exception:
+        app.logger.exception("Failed to send Telegram notification")
+
+
+def send_email_notification():
+    api_key = os.environ.get("RESEND_API_KEY")
+
+    if not api_key:
+        app.logger.warning("RESEND_API_KEY is not configured")
+        return
+
+    payload = {
+        "from": "PoliWhiz <onboarding@resend.dev>",
+        "to": ["gofits@gmail.com"],
+        "subject": "PoliWhiz Trial — переход к скачиванию",
+        "text": (
+            "Кто-то перешёл по ссылке для скачивания PoliWhiz Trial.\n"
+            "Время события: "
+            + datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+        ),
+    }
+
+    data = json.dumps(payload).encode("utf-8")
+
+    req = urllib.request.Request(
+        "https://api.resend.com/emails",
+        data=data,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(req, timeout=10) as response:
+            response.read()
+
+        app.logger.info("Download email notification sent successfully")
+
+    except Exception:
+        app.logger.exception("Failed to send download email notification")
 
 
 def get_duration(file_path):
@@ -57,10 +147,12 @@ def home():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "home.html")
 
+
 @app.route("/ru")
 def home_ru():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "home_ru.html")
+
 
 @app.route("/how_it_works_en.html")
 def guide_en():
@@ -73,6 +165,7 @@ def guide_ru():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "how_it_works_ru.html")
 
+
 @app.route("/images/<path:filename>")
 def guide_images(filename):
     web_dir = Path(__file__).resolve().parent.parent / "web"
@@ -83,6 +176,8 @@ def guide_images(filename):
 def splitter():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "index.html")
+
+
 @app.route("/studio")
 def studio():
     web_dir = Path(__file__).resolve().parent.parent / "web"
@@ -93,6 +188,7 @@ def studio():
 def studio_ru():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "studio_ru.html")
+
 
 @app.route("/studio/splitter")
 def studio_splitter():
@@ -105,6 +201,7 @@ def studio_splitter_ru():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "studio_splitter_ru.html")
 
+
 @app.route("/sitemap.xml")
 def sitemap():
     web_dir = Path(__file__).resolve().parent.parent / "web"
@@ -116,6 +213,7 @@ def robots():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "robots.txt", mimetype="text/plain")
 
+
 @app.route("/yandex_0210c72dfc5030ec.html")
 def yandex_verification():
     web_dir = Path(__file__).resolve().parent.parent / "web"
@@ -124,6 +222,16 @@ def yandex_verification():
         "yandex_0210c72dfc5030ec.html",
         mimetype="text/html"
     )
+
+
+@app.route("/get-apk")
+def get_apk():
+    app.logger.info("APK link clicked")
+
+    send_telegram_notification()
+    send_email_notification()
+
+    return redirect(APK_URL, code=302)
 
 
 @app.route("/api/split", methods=["POST"])
@@ -259,6 +367,8 @@ def file_too_large(_error):
 
 
 if __name__ == "__main__":
-    import os
-
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)), debug=False)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 8080)),
+        debug=False
+    )
