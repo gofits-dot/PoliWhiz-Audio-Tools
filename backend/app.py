@@ -34,7 +34,6 @@ app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH
 ADMIN_CHAT_ID = 1710023187
 
 APK_URL = (
-    "https://drive.google.com/file/d/"
     "https://drive.google.com/file/d/1SHi6ckfkMSlqD0IUq_Yt4i71BAqyiXZm/view?usp=drivesdk"
 )
 
