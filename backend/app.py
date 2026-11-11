@@ -35,7 +35,7 @@ ADMIN_CHAT_ID = 1710023187
 
 APK_URL = (
     "https://drive.google.com/file/d/"
-    "1SHi6ckfkMSlqD0IUqY_T4i71BAqyiXZm/view?usp=drivesdk"
+    "https://drive.google.com/file/d/1SHi6ckfkMSlqD0IUq_Yt4i71BAqyiXZm/view?usp=drivesdk"
 )
 
 
