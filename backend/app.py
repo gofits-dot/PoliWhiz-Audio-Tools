@@ -151,6 +151,17 @@ def home_ru():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "home_ru.html")
 
+@app.route("/download")
+def download_page():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "download.html")
+
+
+@app.route("/download/ru")
+def download_page_ru():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "download_ru.html")
+
 
 @app.route("/how_it_works_en.html")
 def guide_en():

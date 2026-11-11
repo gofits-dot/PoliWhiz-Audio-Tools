@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faff">
+
+    <title>Скачать PoliWhiz Trial для Android</title>
+    <meta name="description"
+        content="Скачайте PoliWhiz Trial для Android. Превращайте живую речь в текст и развивайте навыки понимания иностранных языков на слух.">
+
+    <link rel="canonical" href="https://poliwhiz.com/download/ru">
+    <link rel="alternate" hreflang="en" href="https://poliwhiz.com/download">
+    <link rel="alternate" hreflang="ru" href="https://poliwhiz.com/download/ru">
+    <link rel="alternate" hreflang="x-default" href="https://poliwhiz.com/download">
+
+    <style>
+        :root {
+            --background: #f7faff;
+            --surface: #ffffff;
+            --text: #172b4d;
+            --muted: #64748b;
+            --blue: #3478e5;
+            --blue-dark: #245fc0;
+            --blue-light: #eaf2ff;
+            --border: #e3eaf4;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1000px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, .95);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav {
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--blue);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 6px;
+            margin-left: 8px;
+            padding-left: 16px;
+            border-left: 1px solid var(--border);
+        }
+
+        .language-switcher a,
+        .language-switcher span {
+            min-width: 36px;
+            padding: 5px 8px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .language-switcher .active {
+            color: var(--blue-dark);
+            background: var(--blue-light);
+            border-color: #cfe0ff;
+        }
+
+        .hero {
+            padding: 76px 0 55px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 6px 13px;
+            border-radius: 30px;
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        h1 {
+            margin: 20px 0 14px;
+            font-size: clamp(34px, 5vw, 48px);
+            line-height: 1.15;
+            letter-spacing: -1.5px;
+        }
+
+        .hero-description {
+            max-width: 650px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 18px;
+        }
+
+        .download-card {
+            max-width: 650px;
+            margin: 36px auto 0;
+            padding: 34px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(30, 64, 120, .07);
+        }
+
+        .app-icon {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 17px;
+            display: grid;
+            place-items: center;
+            border-radius: 19px;
+            background: var(--blue-light);
+            color: var(--blue);
+            font-size: 35px;
+            font-weight: 800;
+        }
+
+        .download-card h2 {
+            margin: 0 0 7px;
+            font-size: 25px;
+        }
+
+        .download-meta {
+            margin-bottom: 23px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 11px;
+            width: 100%;
+            max-width: 390px;
+            min-height: 60px;
+            padding: 13px 22px;
+            border-radius: 12px;
+            background: var(--blue);
+            color: #fff;
+            font-size: 17px;
+            font-weight: 700;
+            transition: background .2s, transform .2s;
+        }
+
+        .download-button:hover {
+            background: var(--blue-dark);
+            transform: translateY(-2px);
+        }
+
+        .download-button svg {
+            width: 23px;
+            height: 23px;
+            flex-shrink: 0;
+        }
+
+        .download-note {
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .steps {
+            padding: 35px 0 75px;
+        }
+
+        .section-heading {
+            margin-bottom: 28px;
+            text-align: center;
+        }
+
+        .section-heading h2 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .section-heading p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .step {
+            padding: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .step-number {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 13px;
+            border-radius: 10px;
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            font-weight: 800;
+        }
+
+        .step h3 {
+            margin: 0 0 8px;
+            font-size: 17px;
+        }
+
+        .step p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .guide-link {
+            margin-top: 27px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .guide-link a {
+            color: var(--blue-dark);
+            font-weight: 700;
+        }
+
+        footer {
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            .nav {
+                padding: 15px 0;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-links {
+                width: 100%;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .language-switcher {
+                margin-left: auto;
+            }
+
+            .hero {
+                padding: 55px 0 35px;
+            }
+
+            .download-card {
+                padding: 26px 19px;
+            }
+
+            .step-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                padding-bottom: 50px;
+            }
+        }
+    </style>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CYBZT3WY4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-6CYBZT3WY4');
+    </script>
+
+    <!-- Yandex.Metrika -->
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) {
+                if (document.scripts[j].src === r) return;
+            }
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0],
+                k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=114109504', 'ym');
+
+        ym(114109504, 'init', {
+            ssr: true,
+            webvisor: true,
+            clickmap: true,
+            ecommerce: "dataLayer",
+            referrer: document.referrer,
+            url: location.href,
+            accurateTrackBounce: true,
+            trackLinks: true
+        });
+    </script>
+</head>
+
+<body>
+    <noscript>
+        <div>
+            <img src="https://mc.yandex.ru/watch/114109504" style="position:absolute; left:-9999px;" alt="">
+        </div>
+    </noscript>
+
+    <header>
+        <div class="container nav">
+            <a class="logo" href="/ru">Poli<span>Whiz</span></a>
+
+            <nav class="nav-links" aria-label="Основная навигация">
+                <a href="/ru">Главная</a>
+                <a href="/how_it_works_ru.html">Руководство</a>
+
+                <div class="language-switcher" aria-label="Выбор языка">
+                    <a href="/download" lang="en">EN</a>
+                    <span class="active" aria-current="page">RU</span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="eyebrow">PoliWhiz для Android</div>
+
+                <h1>Понимайте живую речь.<br>Учитесь без границ.</h1>
+
+                <p class="hero-description">
+                    Скачайте PoliWhiz Trial и превращайте устную речь
+                    в удобный для чтения текст. Развивайте навыки
+                    восприятия иностранных языков на слух в своём темпе.
+                </p>
+
+                <div class="download-card">
+                    <div class="app-icon" aria-hidden="true">P</div>
+
+                    <h2>PoliWhiz Trial</h2>
+                    <div class="download-meta">
+                        Android · APK · 43,8 МБ
+                    </div>
+
+                    <a class="download-button" href="/get-apk">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 3v12"></path>
+                            <path d="m7 10 5 5 5-5"></path>
+                            <path d="M5 20h14"></path>
+                        </svg>
+                        Скачать PoliWhiz Trial
+                    </a>
+
+                    <p class="download-note">
+                        Пробная версия · Прямая загрузка APK-файла
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="steps">
+            <div class="container">
+                <div class="section-heading">
+                    <h2>Как установить приложение</h2>
+                    <p>Всего три простых шага.</p>
+                </div>
+
+                <div class="step-grid">
+                    <article class="step">
+                        <div class="step-number">1</div>
+                        <h3>Скачайте APK-файл</h3>
+                        <p>
+                            Нажмите кнопку скачивания и дождитесь,
+                            пока установочный файл PoliWhiz сохранится
+                            на вашем телефоне.
+                        </p>
+                    </article>
+
+                    <article class="step">
+                        <div class="step-number">2</div>
+                        <h3>Откройте скачанный файл</h3>
+                        <p>
+                            Найдите PoliWhiz-Trial.apk в папке
+                            загрузок и нажмите на файл, чтобы
+                            начать установку.
+                        </p>
+                    </article>
+
+                    <article class="step">
+                        <div class="step-number">3</div>
+                        <h3>Разрешите установку</h3>
+                        <p>
+                            Если Android запросит разрешение,
+                            разрешите установку приложений из этого
+                            источника для браузера или файлового
+                            менеджера. Затем завершите установку.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="guide-link">
+                    Нужна помощь с началом работы?
+                    <a href="/how_it_works_ru.html">Откройте руководство PoliWhiz</a>.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            © 2026 PoliWhiz · Изучение языков через живую речь
+        </div>
+    </footer>
+</body>
+
+</html>
