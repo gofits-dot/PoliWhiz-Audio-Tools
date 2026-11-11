@@ -465,6 +465,42 @@
             © 2026 PoliWhiz · Изучение языков через живую речь
         </div>
     </footer>
+<script>
+(function () {
+    const button = document.querySelector(".download-button");
+    if (!button) return;
+    let started = false;
+    button.addEventListener("click", function (event) {
+        event.preventDefault();
+        if (started) return;
+        started = true;
+        const destination = button.href;
+        let pending = 0;
+        let finished = false;
+        function go() {
+            if (finished) return;
+            finished = true;
+            window.location.href = destination;
+        }
+        const fallback = setTimeout(go, 800);
+        function done() {
+            pending--;
+            if (pending <= 0) { clearTimeout(fallback); go(); }
+        }
+        if (typeof window.gtag === "function") {
+            pending++;
+            try { window.gtag("event", "apk_download", {event_callback: done, event_timeout: 700}); }
+            catch (e) { done(); }
+        }
+        if (typeof window.ym === "function") {
+            pending++;
+            try { window.ym(114109504, "reachGoal", "apk_download", done); }
+            catch (e) { done(); }
+        }
+        if (pending === 0) { clearTimeout(fallback); go(); }
+    });
+})();
+</script>
 </body>
 
 </html>
