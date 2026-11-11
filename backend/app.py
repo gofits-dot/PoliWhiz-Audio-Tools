@@ -7,7 +7,7 @@ import urllib.request
 from datetime import datetime
 from pathlib import Path
 
-from flask import Flask, jsonify, request, send_from_directory, redirect
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
@@ -33,9 +33,8 @@ app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH
 
 ADMIN_CHAT_ID = 1710023187
 
-APK_URL = (
-    "https://drive.google.com/file/d/1SHi6ckfkMSlqD0IUq_Yt4i71BAqyiXZm/view?usp=drivesdk"
-)
+APK_DIR = Path("/data/downloads")
+APK_FILENAME = "app-trial-release.apk"
 
 
 def send_telegram_notification():
@@ -225,12 +224,18 @@ def yandex_verification():
 
 @app.route("/get-apk")
 def get_apk():
-    app.logger.info("APK link clicked")
+    app.logger.info("APK download requested")
 
     send_telegram_notification()
     send_email_notification()
 
-    return redirect(APK_URL, code=302)
+    return send_from_directory(
+        APK_DIR,
+        APK_FILENAME,
+        as_attachment=True,
+        download_name="PoliWhiz-Trial.apk",
+        mimetype="application/vnd.android.package-archive",
+    )
 
 
 @app.route("/api/split", methods=["POST"])
