@@ -522,6 +522,15 @@
         const statusBox = document.getElementById("status");
         const downloadsBox = document.getElementById("downloads");
         const splitButton = document.getElementById("splitButton");
+        const formatElapsed = (milliseconds) => {
+        const totalMilliseconds = Math.floor(milliseconds);
+        const totalSeconds = Math.floor(totalMilliseconds / 1000);
+        const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+        const seconds = String(totalSeconds % 60).padStart(2, "0");
+        const millis = String(totalMilliseconds % 1000).padStart(3, "0");
+
+                return `${minutes}:${seconds}.${millis}`;
+            };
         const audioInput = document.getElementById("audio");
         const audioFileName = document.getElementById("audioFileName");
 
@@ -531,7 +540,9 @@
                 : "Файл не выбран";
         });
 
-        const API_BASE = "https://poliwhiz-audio-tools.fadehost.app";
+        const API_BASE = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+                ? ""
+                : "https://poliwhiz-audio-tools.fadehost.app";
 
         form.addEventListener("submit", async (event) => {
             event.preventDefault();
@@ -554,8 +565,16 @@
             formData.append("parts", partsCount);
 
             splitButton.disabled = true;
-            splitButton.textContent = "Обрабатываю аудио...";
+
+            const startTime = Date.now();
+            let completed = false;
+
+            splitButton.textContent = `Обрабатываю аудио... ${formatElapsed(0)}`;
             statusBox.textContent = "Загружаю файл и разделяю его. Пожалуйста, подождите...";
+
+            const timerInterval = setInterval(() => {
+                splitButton.textContent = `Обрабатываю аудио... ${formatElapsed(Date.now() - startTime)}`;
+            }, 50);
 
             try {
                 const response = await fetch(`${API_BASE}/api/split`, {
@@ -582,12 +601,20 @@
                     downloadsBox.appendChild(link);
                 });
 
+                completed = true;
+                clearInterval(timerInterval);
+                splitButton.textContent = `Готово за ${formatElapsed(Date.now() - startTime)}`;
+
             } catch (error) {
                 statusBox.textContent = `Ошибка: ${error.message}`;
                 statusBox.className = "error";
             } finally {
+                clearInterval(timerInterval);
                 splitButton.disabled = false;
-                splitButton.textContent = "Разделить аудио";
+
+                if (!completed) {
+                    splitButton.textContent = "Разделить аудио";
+                }
             }
         });
     </script>

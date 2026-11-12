@@ -3,6 +3,7 @@ import os
 import subprocess
 import uuid
 import json
+import time
 import urllib.request
 from datetime import datetime
 from pathlib import Path
@@ -283,12 +284,19 @@ def split_audio():
     input_path = operation_upload_dir / f"source{extension}"
 
     try:
-        audio.save(input_path)
+        request_start = time.perf_counter()
 
+        save_start = time.perf_counter()
+        audio.save(input_path)
+        save_time = time.perf_counter() - save_start
+
+        duration_start = time.perf_counter()
         duration = get_duration(input_path)
+        duration_time = time.perf_counter() - duration_start
         segment_duration = duration / parts_count
 
         output_extension = extension
+        ffmpeg_start = time.perf_counter()
 
         for index in range(parts_count):
             start_time = index * segment_duration
@@ -308,7 +316,7 @@ def split_audio():
             ]
 
             if extension == ".mp3":
-                command += ["-c:a", "libmp3lame", "-q:a", "2"]
+                command += ["-c:a", "copy"]
             elif extension == ".wav":
                 command += ["-c:a", "pcm_s16le"]
             else:
@@ -323,6 +331,15 @@ def split_audio():
                 check=True,
                 timeout=600,
             )
+
+        ffmpeg_time = time.perf_counter() - ffmpeg_start
+        total_time = time.perf_counter() - request_start
+
+        app.logger.warning(
+            "SPLITTER TIMING | save: %.3fs | ffprobe: %.3fs | "
+            "ffmpeg: %.3fs | total: %.3fs | parts: %d",
+            save_time, duration_time, ffmpeg_time, total_time, parts_count,
+        )
 
         parts = [
             {

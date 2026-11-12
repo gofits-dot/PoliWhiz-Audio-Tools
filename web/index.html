@@ -199,6 +199,15 @@
         const statusBox = document.getElementById("status");
         const downloadsBox = document.getElementById("downloads");
         const splitButton = document.getElementById("splitButton");
+        const formatElapsed = (milliseconds) => {
+        const totalMilliseconds = Math.floor(milliseconds);
+        const totalSeconds = Math.floor(totalMilliseconds / 1000);
+        const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+        const seconds = String(totalSeconds % 60).padStart(2, "0");
+        const millis = String(totalMilliseconds % 1000).padStart(3, "0");
+
+        return `${minutes}:${seconds}.${millis}`;
+        };
 
         // Временно используется локальный адрес для разработки.
         const API_BASE = "https://poliwhiz-audio-tools.fadehost.app";
@@ -222,8 +231,16 @@
             formData.append("parts", partsCount);
 
             splitButton.disabled = true;
-            splitButton.textContent = "Обрабатываю аудио...";
+
+            const startTime = Date.now();
+            let completed = false;
+
+            splitButton.textContent = "Разделение… 00:00";
             statusBox.textContent = "Загружаю файл и разделяю его. Подожди...";
+
+            const timerInterval = setInterval(() => {
+                splitButton.textContent = `Разделение… ${formatElapsed(Date.now() - startTime)}`;
+            }, 50);
 
             try {
                 const response = await fetch(`${API_BASE}/api/split`, {
@@ -249,12 +266,22 @@
                     downloadsBox.appendChild(link);
                 });
 
+                completed = true;
+                clearInterval(timerInterval);
+
+                const elapsed = formatElapsed(Date.now() - startTime);
+                splitButton.textContent = `Готово за ${elapsed}`;
+
             } catch (error) {
                 statusBox.textContent =
                     `Ошибка: ${error.message}`;
             } finally {
+                clearInterval(timerInterval);
                 splitButton.disabled = false;
-                splitButton.textContent = "Разделить аудио";
+
+                if (!completed) {
+                    splitButton.textContent = "Разделить аудио";
+                }
             }
         });
     </script>
