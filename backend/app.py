@@ -28,6 +28,7 @@ UPLOAD_DIR = BASE_DIR / "uploads"
 OUTPUT_DIR = BASE_DIR / "outputs"
 
 ALLOWED_EXTENSIONS = {".mp3", ".wav", ".m4a"}
+CONVERTER_EXTENSIONS = {".mp3", ".wav", ".m4a", ".flac", ".ogg"}
 MAX_CONTENT_LENGTH = 200 * 1024 * 1024  # 200 MB
 
 app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH
@@ -212,6 +213,18 @@ def studio_splitter_ru():
     return send_from_directory(web_dir, "studio_splitter_ru.html")
 
 
+@app.route("/studio/converter")
+def studio_converter():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "studio_converter.html")
+
+
+@app.route("/studio/ru/converter")
+def studio_converter_ru():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "studio_converter_ru.html")
+
+
 @app.route("/sitemap.xml")
 def sitemap():
     web_dir = Path(__file__).resolve().parent.parent / "web"
@@ -382,6 +395,139 @@ def download_part(operation_id, filename):
         f"part_{index}{extension}"
         for index in range(1, 11)
         for extension in ALLOWED_EXTENSIONS
+    }:
+        return jsonify({"error": "Invalid filename"}), 400
+
+    directory = OUTPUT_DIR / operation_id
+
+    if not (directory / filename).is_file():
+        return jsonify({"error": "File not found"}), 404
+
+    return send_from_directory(directory, filename, as_attachment=True)
+
+
+
+CONVERTER_CODECS = {
+    ".mp3": ["-c:a", "libmp3lame", "-q:a", "2"],
+    ".wav": ["-c:a", "pcm_s16le"],
+    ".m4a": ["-c:a", "aac", "-b:a", "192k"],
+    ".flac": ["-c:a", "flac"],
+    ".ogg": ["-c:a", "libvorbis", "-q:a", "5"],
+}
+
+
+@app.route("/api/convert", methods=["POST"])
+def convert_audio():
+    if "audio" not in request.files:
+        return jsonify({"error": "No audio file provided"}), 400
+
+    audio = request.files["audio"]
+    if not audio.filename:
+        return jsonify({"error": "No file selected"}), 400
+
+    original_name = secure_filename(audio.filename)
+    input_extension = Path(original_name).suffix.lower()
+
+    if input_extension not in CONVERTER_EXTENSIONS:
+        return jsonify({
+            "error": "Supported input formats: MP3, WAV, M4A, FLAC, OGG"
+        }), 400
+
+    target_extension = request.form.get("target_format", "").lower().strip()
+    if not target_extension.startswith("."):
+        target_extension = "." + target_extension
+
+    if target_extension not in CONVERTER_EXTENSIONS:
+        return jsonify({
+            "error": "Choose MP3, WAV, M4A, FLAC or OGG as the output format"
+        }), 400
+
+    if input_extension == target_extension:
+        return jsonify({
+            "error": "The source and target formats are identical"
+        }), 400
+
+    operation_id = uuid.uuid4().hex
+    operation_upload_dir = UPLOAD_DIR / operation_id
+    operation_output_dir = OUTPUT_DIR / operation_id
+    operation_upload_dir.mkdir(parents=True, exist_ok=True)
+    operation_output_dir.mkdir(parents=True, exist_ok=True)
+
+    input_path = operation_upload_dir / f"source{input_extension}"
+    output_filename = f"converted{target_extension}"
+    output_path = operation_output_dir / output_filename
+    conversion_succeeded = False
+
+    try:
+        request_start = time.perf_counter()
+        audio.save(input_path)
+
+        command = [
+            "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
+            "-i", str(input_path),
+            "-vn",
+        ]
+        command += CONVERTER_CODECS[target_extension]
+        command.append(str(output_path))
+
+        subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=600,
+        )
+
+        conversion_succeeded = True
+
+        total_time = time.perf_counter() - request_start
+        app.logger.warning(
+            "CONVERTER TIMING | input: %s | output: %s | total: %.3fs",
+            input_extension, target_extension, total_time,
+        )
+
+        return jsonify({
+            "operation_id": operation_id,
+            "output_format": target_extension.lstrip("."),
+            "filename": output_filename,
+            "download_url": (
+                f"/api/convert-download/{operation_id}/{output_filename}"
+            ),
+        })
+
+    except subprocess.TimeoutExpired:
+        return jsonify({"error": "Audio conversion timed out"}), 504
+
+    except subprocess.CalledProcessError as error:
+        app.logger.warning(
+            "Audio conversion failed: %s",
+            error.stderr[-2000:] if error.stderr else "Unknown FFmpeg error",
+        )
+        return jsonify({"error": "Could not convert this audio file"}), 400
+
+    finally:
+        if input_path.exists():
+            input_path.unlink()
+
+        try:
+            operation_upload_dir.rmdir()
+        except OSError:
+            pass
+
+        if not conversion_succeeded:
+            try:
+                shutil.rmtree(operation_output_dir)
+            except OSError:
+                pass
+
+
+@app.route("/api/convert-download/<operation_id>/<filename>")
+def download_converted_audio(operation_id, filename):
+    if not operation_id.isalnum():
+        return jsonify({"error": "Invalid operation ID"}), 400
+
+    if filename not in {
+        f"converted{extension}" for extension in CONVERTER_EXTENSIONS
     }:
         return jsonify({"error": "Invalid filename"}), 400
 

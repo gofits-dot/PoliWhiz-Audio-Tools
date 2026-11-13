@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7faff">
+
+    <title>Конвертер аудио — PoliWhiz Studio</title>
+    <meta name="description" content="Конвертируйте аудиофайлы онлайн в форматы MP3, WAV, M4A, FLAC и OGG.">
+    <link rel="canonical" href="https://poliwhiz.com/studio/ru/converter">
+    <link rel="alternate" hreflang="en" href="https://poliwhiz.com/studio/converter">
+    <link rel="alternate" hreflang="ru" href="https://poliwhiz.com/studio/ru/converter">
+    <link rel="alternate" hreflang="x-default" href="https://poliwhiz.com/studio/converter">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6CYBZT3WY4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-6CYBZT3WY4');
+    </script>
+
+    <!-- Yandex.Metrika -->
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) {
+                if (document.scripts[j].src === r) return;
+            }
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0],
+                k.async = 1, k.src = r, a.parentNode.insertBefore(k, a);
+        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=114109504', 'ym');
+
+        ym(114109504, 'init', {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: true
+        });
+    </script>
+    <noscript>
+        <div>
+            <img src="https://mc.yandex.ru/watch/114109504" style="position:absolute; left:-9999px;" alt="">
+        </div>
+    </noscript>
+
+    <style>
+        :root {
+            --background: #f7faff;
+            --surface: #ffffff;
+            --text: #172b4d;
+            --muted: #64748b;
+            --blue: #3478e5;
+            --blue-dark: #245fc0;
+            --blue-light: #eaf2ff;
+            --border: #e3eaf4;
+            --success: #16834a;
+            --error: #c0392b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .site-header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-inner {
+            max-width: 1120px;
+            min-height: 76px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .brand>span:first-child {
+            color: var(--blue);
+        }
+
+        .brand-motto {
+            display: block;
+            margin-top: 4px;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--muted);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-link,
+        .language-link {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-link:hover,
+        .language-link:hover {
+            color: var(--blue);
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 8px;
+        }
+
+        .language-link {
+            padding: 6px 9px;
+            border-radius: 7px;
+            color: var(--muted);
+        }
+
+        .language-link.active {
+            background: var(--blue-light);
+            color: var(--blue-dark);
+        }
+
+        .main {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 30px 24px 60px;
+        }
+
+        .breadcrumbs {
+            margin-bottom: 30px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .breadcrumbs a {
+            color: var(--blue);
+        }
+
+        .hero {
+            margin-bottom: 28px;
+            text-align: left;
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            color: var(--blue);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: clamp(30px, 5vw, 42px);
+            line-height: 1.2;
+        }
+
+        .hero-description {
+            max-width: 620px;
+            margin: 0;
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .tool-card {
+            max-width: 720px;
+            padding: 30px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(23, 43, 77, 0.05);
+        }
+
+        .tool-card h2 {
+            margin: 0 0 8px;
+            font-size: 23px;
+        }
+
+        .tool-description {
+            margin: 0 0 26px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .field {
+            margin-bottom: 22px;
+        }
+
+        .field-title,
+        .field label {
+            display: block;
+            margin-bottom: 9px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .file-picker {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .file-input-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+        }
+
+        .file-picker-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 16px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .file-picker-button:hover {
+            border-color: var(--blue);
+        }
+
+        .file-name {
+            color: var(--muted);
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: #fff;
+            color: var(--text);
+            font: inherit;
+            font-size: 14px;
+        }
+
+        .primary-button {
+            width: 100%;
+            padding: 14px 20px;
+            border: 0;
+            border-radius: 10px;
+            background: var(--blue);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .primary-button:hover:not(:disabled) {
+            background: var(--blue-dark);
+        }
+
+        .primary-button:disabled {
+            opacity: 0.7;
+            cursor: wait;
+        }
+
+        #status {
+            margin-top: 18px;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        #status:empty {
+            display: none;
+        }
+
+        #status.success {
+            color: var(--success);
+        }
+
+        #status.error {
+            color: var(--error);
+        }
+
+        .download-link {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 11px 16px;
+            border-radius: 9px;
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            font-size: 14px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .note {
+            margin: 22px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .back-link {
+            display: block;
+            width: fit-content;
+            margin: 28px auto 0;
+            color: var(--blue);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: var(--blue-dark);
+        }
+
+        .site-footer {
+            padding: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .footer-motto {
+            margin-bottom: 6px;
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .header-inner {
+                padding: 12px 16px;
+            }
+
+            .header-actions {
+                gap: 12px;
+            }
+
+            .main {
+                padding: 24px 16px 45px;
+            }
+
+            .tool-card {
+                padding: 22px 18px;
+            }
+
+            .brand {
+                font-size: 20px;
+            }
+
+            .brand-motto {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="/">
+                Poli<span>Whiz</span>
+                <span class="brand-motto">À travers les épines, vers les étoiles !</span>
+            </a>
+
+            <div class="header-actions">
+                <a class="nav-link" href="/studio/ru">Studio</a>
+                <div class="language-switcher">
+                    <a class="language-link" href="/studio/converter">EN</a>
+                    <a class="language-link active" href="/studio/ru/converter">RU</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="breadcrumbs">
+            <a href="/studio/ru">Studio</a> / Конвертер аудио
+        </div>
+
+        <section class="hero">
+            <p class="eyebrow">PoliWhiz Studio</p>
+            <h1>Конвертер аудио</h1>
+            <p class="hero-description">
+                Быстро и легко преобразуйте аудиофайлы из одного популярного формата в другой.
+            </p>
+        </section>
+
+        <section class="tool-card">
+            <h2>Конвертация аудио</h2>
+            <p class="tool-description">
+                Загрузите аудиофайл и выберите формат, в который хотите его преобразовать.
+            </p>
+
+            <form id="convertForm">
+                <div class="field">
+                    <div class="field-title">Выберите аудиофайл</div>
+                    <div class="file-picker">
+                        <input class="file-input-hidden" type="file" id="audio" name="audio"
+                            accept=".mp3,.wav,.m4a,.flac,.ogg,audio/mpeg,audio/wav,audio/mp4,audio/flac,audio/ogg"
+                            required>
+                        <label class="file-picker-button" for="audio">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 16V4"></path>
+                                <path d="m7 9 5-5 5 5"></path>
+                                <path d="M20 16.5v3A1.5 1.5 0 0 1 18.5 21h-13A1.5 1.5 0 0 1 4 19.5v-3"></path>
+                            </svg>
+                            <span>Выбрать файл</span>
+                        </label>
+                        <span class="file-name" id="audioFileName">Файл не выбран</span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="targetFormat">Преобразовать в формат</label>
+                    <select id="targetFormat" name="target_format" required>
+                        <option value="mp3">MP3</option>
+                        <option value="wav">WAV</option>
+                        <option value="m4a">M4A</option>
+                        <option value="flac">FLAC</option>
+                        <option value="ogg">OGG</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="convertButton" class="primary-button">
+                    Конвертировать аудио
+                </button>
+            </form>
+
+            <div id="status" aria-live="polite"></div>
+            <div id="downloads"></div>
+
+            <p class="note">
+                Поддерживаемые форматы: MP3, WAV, M4A, FLAC и OGG.
+            </p>
+        </section>
+
+        <a class="back-link" href="/studio/ru">← Ко всем инструментам Studio</a>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-motto">À travers les épines, vers les étoiles !</div>
+        © 2026 PoliWhiz. Все права защищены.
+    </footer>
+
+    <script>
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        const form = document.getElementById("convertForm");
+        const statusBox = document.getElementById("status");
+        const downloadsBox = document.getElementById("downloads");
+        const convertButton = document.getElementById("convertButton");
+        const audioInput = document.getElementById("audio");
+        const audioFileName = document.getElementById("audioFileName");
+        const targetFormat = document.getElementById("targetFormat");
+
+        const formatElapsed = (milliseconds) => {
+            const totalMilliseconds = Math.floor(milliseconds);
+            const totalSeconds = Math.floor(totalMilliseconds / 1000);
+            const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+            const seconds = String(totalSeconds % 60).padStart(2, "0");
+            const millis = String(totalMilliseconds % 1000).padStart(3, "0");
+
+            return `${minutes}:${seconds}.${millis}`;
+        };
+
+        audioInput.addEventListener("change", () => {
+            audioFileName.textContent = audioInput.files.length
+                ? audioInput.files[0].name
+                : "Файл не выбран";
+        });
+
+        const API_BASE =
+            window.location.hostname === "127.0.0.1" ||
+                window.location.hostname === "localhost"
+                ? ""
+                : "https://poliwhiz-audio-tools.fadehost.app";
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const audioFile = audioInput.files[0];
+            const outputFormat = targetFormat.value;
+
+            downloadsBox.innerHTML = "";
+            statusBox.textContent = "";
+            statusBox.className = "";
+
+            if (!audioFile) {
+                statusBox.textContent = "Сначала выберите аудиофайл.";
+                statusBox.className = "error";
+                return;
+            }
+
+            const supportedExtensions = [".mp3", ".wav", ".m4a", ".flac", ".ogg"];
+            const inputExtension = audioFile.name
+                .slice(audioFile.name.lastIndexOf("."))
+                .toLowerCase();
+
+            if (!supportedExtensions.includes(inputExtension)) {
+                statusBox.textContent = "Этот аудиоформат не поддерживается.";
+                statusBox.className = "error";
+                return;
+            }
+
+            if (inputExtension === `.${outputFormat}`) {
+                statusBox.textContent =
+                    "Выходной формат совпадает с исходным. Выберите другой формат.";
+                statusBox.className = "error";
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("audio", audioFile);
+            formData.append("target_format", outputFormat);
+
+            convertButton.disabled = true;
+
+            const startTime = Date.now();
+            let completed = false;
+
+            convertButton.textContent = `Конвертация... ${formatElapsed(0)}`;
+            statusBox.textContent = "Загрузка и конвертация файла. Пожалуйста, подождите...";
+
+            const timerInterval = setInterval(() => {
+                convertButton.textContent =
+                    `Конвертация... ${formatElapsed(Date.now() - startTime)}`;
+            }, 50);
+
+            try {
+                const response = await fetch(`${API_BASE}/api/convert`, {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || "Не удалось конвертировать аудио.");
+                }
+
+                statusBox.textContent =
+                    `Готово! Аудио преобразовано в формат ${result.output_format.toUpperCase()}.`;
+                statusBox.className = "success";
+
+                const link = document.createElement("a");
+                link.className = "download-link";
+                link.href = `${API_BASE}${result.download_url}`;
+                link.textContent = `Скачать ${result.filename}`;
+                link.download = result.filename;
+                downloadsBox.appendChild(link);
+
+                completed = true;
+                clearInterval(timerInterval);
+                convertButton.textContent =
+                    `Готово за ${formatElapsed(Date.now() - startTime)}`;
+
+            } catch (error) {
+                statusBox.textContent = `Ошибка: ${error.message}`;
+                statusBox.className = "error";
+            } finally {
+                clearInterval(timerInterval);
+                convertButton.disabled = false;
+
+                if (!completed) {
+                    convertButton.textContent = "Конвертировать аудио";
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
