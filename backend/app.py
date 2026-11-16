@@ -225,6 +225,17 @@ def studio_converter_ru():
     return send_from_directory(web_dir, "studio_converter_ru.html")
 
 
+@app.route("/studio/noise-reduction")
+def studio_noise_reduction():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "studio_noise_reduction.html")
+
+
+@app.route("/studio/ru/noise-reduction")
+def studio_noise_reduction_ru():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "studio_noise_reduction_ru.html")
+
 @app.route("/sitemap.xml")
 def sitemap():
     web_dir = Path(__file__).resolve().parent.parent / "web"
@@ -538,6 +549,139 @@ def download_converted_audio(operation_id, filename):
 
     return send_from_directory(directory, filename, as_attachment=True)
 
+
+@app.route("/api/noise-reduction", methods=["POST"])
+def reduce_audio_noise():
+    if "audio" not in request.files:
+        return jsonify({"error": "No audio file provided"}), 400
+
+    audio = request.files["audio"]
+    if not audio.filename:
+        return jsonify({"error": "No file selected"}), 400
+
+    original_name = secure_filename(audio.filename)
+    input_extension = Path(original_name).suffix.lower()
+
+    if input_extension not in CONVERTER_EXTENSIONS:
+        return jsonify({
+            "error": "Supported input formats: MP3, WAV, M4A, FLAC, OGG"
+        }), 400
+
+    levels = {
+        "light": 6,
+        "soft": 9,
+        "medium": 12,
+        "strong": 18,
+        "maximum": 24,
+    }
+
+    level = request.form.get("level", "medium").lower().strip()
+    if level not in levels:
+        return jsonify({"error": "Choose a valid noise reduction level"}), 400
+
+    operation_id = uuid.uuid4().hex
+    operation_upload_dir = UPLOAD_DIR / operation_id
+    operation_output_dir = OUTPUT_DIR / operation_id
+    operation_upload_dir.mkdir(parents=True, exist_ok=True)
+    operation_output_dir.mkdir(parents=True, exist_ok=True)
+
+    input_path = operation_upload_dir / f"source{input_extension}"
+    output_filename = f"denoised{input_extension}"
+    output_path = operation_output_dir / output_filename
+    processing_succeeded = False
+
+    try:
+        request_start = time.perf_counter()
+        audio.save(input_path)
+
+        command = [
+            "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
+            "-i", str(input_path),
+            "-map", "0:a:0",
+            "-vn",
+            "-af",
+            (
+                f"afftdn=nr={levels[level]}:"
+                "nf=-50:tn=0:ad=0.5:gs=0:rf=-38"
+            ),
+        ]
+        command += CONVERTER_CODECS[input_extension]
+        command.append(str(output_path))
+
+        subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=600,
+        )
+
+        processing_succeeded = True
+
+        total_time = time.perf_counter() - request_start
+        app.logger.warning(
+            "NOISE REDUCTION TIMING | input: %s | level: %s | total: %.3fs",
+            input_extension, level, total_time,
+        )
+
+        return jsonify({
+            "operation_id": operation_id,
+            "level": level,
+            "filename": output_filename,
+            "download_url": (
+                f"/api/noise-reduction-download/{operation_id}/{output_filename}"
+            ),
+        })
+
+    except subprocess.TimeoutExpired:
+        return jsonify({"error": "Noise reduction timed out"}), 504
+
+    except subprocess.CalledProcessError as error:
+        stderr = error.stderr or "Unknown FFmpeg error"
+        app.logger.warning("Noise reduction failed: %s", stderr[-2000:])
+
+        if "No such filter" in stderr and "afftdn" in stderr:
+            return jsonify({
+                "error": "Noise reduction is not available on this server"
+            }), 503
+
+        return jsonify({"error": "Could not process this audio file"}), 400
+
+    finally:
+        if input_path.exists():
+            input_path.unlink()
+
+        try:
+            operation_upload_dir.rmdir()
+        except OSError:
+            pass
+
+        if not processing_succeeded:
+            if output_path.exists():
+                output_path.unlink()
+
+            try:
+                operation_output_dir.rmdir()
+            except OSError:
+                pass
+
+
+@app.route("/api/noise-reduction-download/<operation_id>/<filename>")
+def download_noise_reduced_audio(operation_id, filename):
+    if not operation_id.isalnum():
+        return jsonify({"error": "Invalid operation ID"}), 400
+
+    if filename not in {
+        f"denoised{extension}" for extension in CONVERTER_EXTENSIONS
+    }:
+        return jsonify({"error": "Invalid filename"}), 400
+
+    directory = OUTPUT_DIR / operation_id
+
+    if not (directory / filename).is_file():
+        return jsonify({"error": "File not found"}), 404
+
+    return send_from_directory(directory, filename, as_attachment=True)
 
 @app.errorhandler(413)
 def file_too_large(_error):
