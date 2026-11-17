@@ -165,6 +165,18 @@ def download_page_ru():
     return send_from_directory(web_dir, "download_ru.html")
 
 
+@app.route("/full")
+def full_version_page():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "full_version.html")
+
+
+@app.route("/full/ru")
+def full_version_page_ru():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "full_version_ru.html")
+
+
 @app.route("/how_it_works_en.html")
 def guide_en():
     web_dir = Path(__file__).resolve().parent.parent / "web"
