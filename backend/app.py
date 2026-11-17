@@ -183,10 +183,43 @@ def guide_images(filename):
     return send_from_directory(web_dir / "images", filename)
 
 
+@app.route("/favicon.ico")
+def favicon():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(
+        web_dir,
+        "favicon.ico",
+        mimetype="image/vnd.microsoft.icon"
+    )
+
+
+@app.route("/favicon/<filename>")
+def favicon_assets(filename):
+    allowed_files = {
+        "favicon-16.png",
+        "favicon-32.png",
+        "favicon-48.png",
+        "favicon-96.png",
+        "favicon-180.png",
+        "favicon-192.png",
+        "favicon-512.png",
+        "apple-touch-icon.png",
+        "android-chrome-192x192.png",
+        "android-chrome-512x512.png",
+    }
+
+    if filename not in allowed_files:
+        return ("Not Found", 404)
+
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, filename)
+
+
 @app.route("/splitter")
 def splitter():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "index.html")
+
 
 
 @app.route("/studio")
