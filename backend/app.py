@@ -236,6 +236,18 @@ def studio_noise_reduction_ru():
     web_dir = Path(__file__).resolve().parent.parent / "web"
     return send_from_directory(web_dir, "studio_noise_reduction_ru.html")
 
+@app.route("/studio/audio-normalizer")
+def studio_audio_normalizer():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "studio_audio_normalizer.html")
+
+
+@app.route("/studio/ru/audio-normalizer")
+def studio_audio_normalizer_ru():
+    web_dir = Path(__file__).resolve().parent.parent / "web"
+    return send_from_directory(web_dir, "studio_audio_normalizer_ru.html")
+
+
 @app.route("/sitemap.xml")
 def sitemap():
     web_dir = Path(__file__).resolve().parent.parent / "web"
@@ -682,6 +694,210 @@ def download_noise_reduced_audio(operation_id, filename):
         return jsonify({"error": "File not found"}), 404
 
     return send_from_directory(directory, filename, as_attachment=True)
+
+
+def parse_loudnorm_measurements(stderr):
+    decoder = json.JSONDecoder()
+
+    for position, character in enumerate(stderr):
+        if character != "{":
+            continue
+
+        try:
+            data, _ = decoder.raw_decode(stderr, position)
+        except json.JSONDecodeError:
+            continue
+
+        required = (
+            "input_i",
+            "input_lra",
+            "input_tp",
+            "input_thresh",
+            "target_offset",
+        )
+
+        if not all(key in data for key in required):
+            continue
+
+        try:
+            values = {
+                "measured_I": float(data["input_i"]),
+                "measured_LRA": float(data["input_lra"]),
+                "measured_TP": float(data["input_tp"]),
+                "measured_thresh": float(data["input_thresh"]),
+                "offset": float(data["target_offset"]),
+            }
+        except (TypeError, ValueError):
+            continue
+
+        import math
+        if all(math.isfinite(value) for value in values.values()):
+            return values
+
+    raise ValueError("Could not measure loudness. The audio may be silent or invalid.")
+
+
+@app.route("/api/audio-normalizer", methods=["POST"])
+def normalize_audio():
+    if "audio" not in request.files:
+        return jsonify({"error": "No audio file provided"}), 400
+
+    audio = request.files["audio"]
+    if not audio.filename:
+        return jsonify({"error": "No file selected"}), 400
+
+    original_name = secure_filename(audio.filename)
+    input_extension = Path(original_name).suffix.lower()
+
+    if input_extension not in CONVERTER_EXTENSIONS:
+        return jsonify({
+            "error": "Supported input formats: MP3, WAV, M4A, FLAC, OGG"
+        }), 400
+
+    mode = request.form.get("mode", "standard").lower().strip()
+    if mode not in {"standard", "dynamic"}:
+        return jsonify({"error": "Choose a valid normalization mode"}), 400
+
+    operation_id = uuid.uuid4().hex
+    operation_upload_dir = UPLOAD_DIR / operation_id
+    operation_output_dir = OUTPUT_DIR / operation_id
+    operation_upload_dir.mkdir(parents=True, exist_ok=True)
+    operation_output_dir.mkdir(parents=True, exist_ok=True)
+
+    input_path = operation_upload_dir / f"source{input_extension}"
+    output_filename = f"normalized{input_extension}"
+    output_path = operation_output_dir / output_filename
+    processing_succeeded = False
+
+    try:
+        request_start = time.perf_counter()
+        audio.save(input_path)
+
+        if mode == "standard":
+            measurement_command = [
+                "ffmpeg", "-hide_banner", "-y",
+                "-i", str(input_path),
+                "-map", "0:a:0",
+                "-vn", "-sn", "-dn",
+                "-af",
+                "loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json",
+                "-f", "null", "-",
+            ]
+
+            measurement = subprocess.run(
+                measurement_command,
+                capture_output=True,
+                text=True,
+                check=True,
+                timeout=600,
+            )
+
+            values = parse_loudnorm_measurements(measurement.stderr)
+
+            measured_filter = (
+                "loudnorm=I=-16:TP=-1.5:LRA=11:"
+                f"measured_I={values['measured_I']:.6f}:"
+                f"measured_LRA={values['measured_LRA']:.6f}:"
+                f"measured_TP={values['measured_TP']:.6f}:"
+                f"measured_thresh={values['measured_thresh']:.6f}:"
+                f"offset={values['offset']:.6f}:"
+                "linear=true:print_format=summary"
+            )
+
+        else:
+            measured_filter = (
+                "dynaudnorm=framelen=500:"
+                "gausssize=31:"
+                "peak=0.95:"
+                "maxgain=5:"
+                "targetrms=0:"
+                "coupling=true:"
+                "correctdc=true"
+            )
+
+        command = [
+            "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
+            "-i", str(input_path),
+            "-map", "0:a:0",
+            "-vn", "-sn", "-dn",
+            "-af", measured_filter,
+        ]
+        command += CONVERTER_CODECS[input_extension]
+        command.append(str(output_path))
+
+        subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=600,
+        )
+
+        processing_succeeded = True
+
+        total_time = time.perf_counter() - request_start
+        app.logger.warning(
+            "AUDIO NORMALIZER TIMING | input: %s | mode: %s | total: %.3fs",
+            input_extension, mode, total_time,
+        )
+
+        return jsonify({
+            "operation_id": operation_id,
+            "mode": mode,
+            "filename": output_filename,
+            "download_url": (
+                f"/api/audio-normalizer-download/{operation_id}/{output_filename}"
+            ),
+        })
+
+    except subprocess.TimeoutExpired:
+        return jsonify({"error": "Audio normalization timed out"}), 504
+
+    except subprocess.CalledProcessError as error:
+        stderr = error.stderr or "Unknown FFmpeg error"
+        app.logger.warning("Audio normalization failed: %s", stderr[-2000:])
+        return jsonify({"error": "Could not normalize this audio file"}), 400
+
+    except ValueError as error:
+        app.logger.warning("Audio normalization measurement failed: %s", error)
+        return jsonify({"error": str(error)}), 400
+
+    finally:
+        if input_path.exists():
+            input_path.unlink()
+
+        try:
+            operation_upload_dir.rmdir()
+        except OSError:
+            pass
+
+        if not processing_succeeded:
+            if output_path.exists():
+                output_path.unlink()
+
+            try:
+                operation_output_dir.rmdir()
+            except OSError:
+                pass
+
+
+@app.route("/api/audio-normalizer-download/<operation_id>/<filename>")
+def download_normalized_audio(operation_id, filename):
+    if not operation_id.isalnum():
+        return jsonify({"error": "Invalid operation ID"}), 400
+
+    if filename not in {
+        f"normalized{extension}" for extension in CONVERTER_EXTENSIONS
+    }:
+        return jsonify({"error": "Invalid filename"}), 400
+
+    directory = OUTPUT_DIR / operation_id
+
+    if not (directory / filename).is_file():
+        return jsonify({"error": "File not found"}), 404
+
+    return send_from_directory(directory, filename, as_attachment=True)
+
 
 @app.errorhandler(413)
 def file_too_large(_error):
